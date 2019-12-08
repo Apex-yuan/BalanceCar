@@ -2,7 +2,7 @@
 #include "angle_control.h"
 #include "speed_control.h"
 #include "direction_control.h"
-#include "protocol.h"
+#include "virtual_oscilloscope.h"
 
 float g_fLeftMotorOut = 0;
 float g_fRightMotorOut = 0;

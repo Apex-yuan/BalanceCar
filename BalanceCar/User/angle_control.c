@@ -1,6 +1,5 @@
 #include "angle_control.h"
-#include "mpu6050.h"
-#include "protocol.h"
+#include "virtual_oscilloscope.h"
 
 float g_fCarAngle;
 float g_fGyroscopeAngleSpeed;

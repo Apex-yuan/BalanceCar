@@ -45,21 +45,17 @@ int main(void)
   
   while(1)
   {
-//    txBuf[0] = ((int)g_fCarAngle>>24)&0xff;
-//    txBuf[1] = ((int)g_fCarAngle>>16)&0xff;
-//    txBuf[2] = ((int)g_fCarAngle>>8)&0xff;
-//    txBuf[3] = (int)g_fCarAngle&0xff;
-//    usart3_niming_report(0x02,txBuf,4);
     //Send_Data(accel,gyro);
-    vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
-    delay_ms(10);
+    //vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
+    //delay_ms(10);
 
-  if(g_bNewLineFlag == 1)
-  {
-    g_bNewLineFlag = 0;
-    ProtocolCpyData();
-    Protocol();
-  }
+  // if(g_bNewLineFlag == 1)
+  // {
+  //   g_bNewLineFlag = 0;
+  //   ProtocolCpyData();
+  //   Protocol();
+  // }
+  protocol_process();
 
   }
 }

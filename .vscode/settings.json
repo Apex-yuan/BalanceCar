@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "stdint.h": "c",
+        "virtual_oscilloscope.h": "c",
+        "direction_control.h": "c"
+    }
+}

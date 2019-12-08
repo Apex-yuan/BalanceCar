@@ -11,31 +11,31 @@
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __PROTOCOL_H
-#define __PROTOCOL_H
+#ifndef __VIRTUAL_OSCILLOSCOPE_H
+#define __VIRTUAL_OSCILLOSCOPE_H
 
 #ifdef __cplusplus
  extern "C" {
 #endif 
 
 /* Includes ------------------------------------------------------------------*/
-#include "usart3.h"
+#include <stdint.h>
+
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
-#define BYTE0(dwTemp) (*(char *)(&dwTemp))
-#define BYTE1(dwTemp) (*((char *)(&dwTemp) + 1))
-#define BYTE2(dwTemp) (*((char *)(&dwTemp) + 2))
-#define BYTE3(dwTemp) (*((char *)(&dwTemp) + 3))
+#define CHANNEL_NUM  8
+/* Exported variables --------------------------------------------------------*/
+extern float g_fware[CHANNEL_NUM];
 
 /* Exported functions ------------------------------------------------------- */
-void usart3_irq(void);
-void protocol_process(void);
+void vcan_sendware(uint8_t *wareaddr, uint32_t waresize);
+
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __PROTOCOL_H */
+#endif /* __VIRTUAL_OSCILLOSCOPE_H */
 
 

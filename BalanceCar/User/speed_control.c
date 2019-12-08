@@ -1,6 +1,6 @@
 #include "speed_control.h"
 #include "encoder.h"
-#include "protocol.h"
+#include "virtual_oscilloscope.h"
 
 
 float g_fCarSpeed,g_fCarSpeedOld;
@@ -11,7 +11,7 @@ float g_fSpeedControlIntegral;
 float g_fSpeedControlOut;
 uint16_t g_nSpeedControlPeriod;
 
-float g_fBTSpeedSet = 0;
+// float g_fBTSpeedSet = 0;
 
 float SPEED_CONTROL_P = 300;//300;//350;
 float SPEED_CONTROL_I = 0.6;//25;

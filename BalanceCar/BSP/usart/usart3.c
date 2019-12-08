@@ -76,6 +76,20 @@ void usart3_init(uint32_t bound)
   USART_Cmd(USART3, ENABLE);
 }
 
+void usart3_sendByte(uint8_t c)
+{
+  USART_SendData(USART3, c);
+  while(USART_GetFlagStatus(USART3, USART_FLAG_TXE) == RESET);
+}
+
+void usart3_sendStr(char * str)
+{
+  while(*str != '\0')
+  {
+    usart3_sendByte(*str++);
+  }
+}
+
 
 //串口2,printf 函数
 //确保一次发送数据不超过USART2_MAX_SEND_LEN字节
