@@ -61,4 +61,5 @@ typedef enum
 void encoder_init(void);
 int16_t encoder_getCurrentPulse(EncoderChoice_t choice);
 
+#endif /* __ENCODER_H */
 
