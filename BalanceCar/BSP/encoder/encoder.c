@@ -1,6 +1,32 @@
-#include "../BSP/encoder/encoder.h"
-#include "../BSP/delay/delay.h"
+/**
+  ******************************************************************************
+  * @file    encoder.c 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-09
+  * @brief   编码器底层驱动
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
 
+/* Includes ------------------------------------------------------------------*/ 
+#include "../BSP/encoder/encoder.h"
+
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+
+/* Private function prototypes -----------------------------------------------*/
+
+/* Private functions ---------------------------------------------------------*/
+
+/**
+  * @brief  定时器3初始化为编码器模式（对应于左电机）
+  * @param  None
+  * @retval None
+  */
 void TIM3_ENCODER_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -38,6 +64,11 @@ void TIM3_ENCODER_Init(void)
   TIM_Cmd(TIM3, ENABLE);  //使能TIM1
 }
 
+/**
+  * @brief  定时器4初始化为编码器模式（对应于右电机）
+  * @param  None
+  * @retval None
+  */
 void TIM4_ENCODER_Init(void)
 {
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -75,26 +106,34 @@ void TIM4_ENCODER_Init(void)
   TIM_Cmd(TIM4, ENABLE);  //使能TIM1
 }
 
-void EncoderInit(void)
+/**
+  * @brief  编码器初始化（初始化左电机编码器和右电机编码器）
+  * @param  None
+  * @retval None
+  */
+void encoder_init(void)
 {
   TIM3_ENCODER_Init();
   TIM4_ENCODER_Init();
 }
 
-
-
-//void encoder_setCounter(uint16_t counter)
-//{
-//  TIM_SetCounter(TIM2,counter);
-//}
-
-//int16_t encoder_getCounter(void)
-//{
-//  TIM_SetCounter(TIM2,0);
-//  delay_ms(10);
-//  return (int16_t)TIM_GetCounter(TIM2);   //这里利用了原码补码的特性可以输出正负
-//  //printf("counter:%d\n",(int16_t)TIM_GetCounter(TIM2));
-//}
+/**
+  * @brief  编码器初始化
+  * @param  None
+  * @retval None
+  */
+int16_t encoder_getCurrentPulse(EncoderChoice_t choice)
+{
+  switch(choice)
+  {
+    case LEFT_ENCODER :
+      return (int16_t)TIM_GetCounter(TIM3);
+    case RIGHT_ENCODER :
+      return -(int16_t)TIM_GetCounter(TIM4);
+    default:
+      return 0;
+  }
+}
 
 
 

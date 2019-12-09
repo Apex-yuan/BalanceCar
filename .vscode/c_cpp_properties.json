@@ -3,10 +3,11 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**",
                 "${workspaceFolder}/**"
             ],
             "defines": [
+                "USE_STDPERIPH_DRIVER",
+                "STM32F10X_MD",
                 "_DEBUG",
                 "UNICODE",
                 "_UNICODE"

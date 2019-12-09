@@ -1,6 +1,22 @@
+/**
+  ******************************************************************************
+  * @file    angle_control.c 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-09
+  * @brief   平衡车直立控制相关的代码
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/ 
 #include "angle_control.h"
 #include "virtual_oscilloscope.h"
-
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 float g_fCarAngle;
 float g_fGyroscopeAngleSpeed;
 float g_fAngleControlOut;
@@ -9,7 +25,15 @@ float g_fPitch, g_fRoll, g_fYaw;
 
 float ANGLE_CONTROL_P = 64;//64;//80;//90
 float ANGLE_CONTROL_D = 0.12;//0.12;//0.15;//0.2
+/* Private function prototypes -----------------------------------------------*/
 
+/* Private functions ---------------------------------------------------------*/
+
+/**
+  * @brief  直立控制算法（置于中断中运行每5ms执行一次）
+  * @param  None
+  * @retval None
+  */
 void AngleControl(void)
 {
   float fValue;

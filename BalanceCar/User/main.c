@@ -31,7 +31,7 @@ int main(void)
   
   TIM1_TIMER_Init(999,71);
   MotorInit();
-  EncoderInit();
+  encoder_init();
   while(MPU_DMP_Init());
   
   g_fAngleControlOut = 0;
