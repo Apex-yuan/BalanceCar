@@ -1,21 +1,35 @@
+/**
+  ******************************************************************************
+  * @file    mpu6050.c 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-09
+  * @brief   提供dmp的接口函数和经过dmp运算的输出结果
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
 
+/* Includes ------------------------------------------------------------------*/ 
 #include "mpu6050.h"
 #include "i2c.h"
 #include "inv_mpu.h"
 #include "inv_mpu_dmp_motion_driver.h"
-#include "usart1.h"
-#include "math.h"
+//#include "usart1.h"
+#include <math.h>
 
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 static signed char gyro_orientation[9] = {-1, 0, 0,
                                            0,-1, 0,
                                            0, 0, 1};
-//float q0=1.0f,q1=0.0f,q2=0.0f,q3=0.0f;
-//float Pitch,Roll,Yaw;
-//unsigned long sensor_timestamp;
-//short gyro[3], accel[3], sensors;
-//unsigned char more;
-//long quat[4];
+IMU_Data imu_data; //用于存储经过dmp计算的imu数据
 
+/* Private function prototypes -----------------------------------------------*/
+
+/* Private functions ---------------------------------------------------------*/
 
 int8_t MPU_I2C_Write(uint8_t addr, uint8_t reg, uint8_t len, uint8_t * data)
 {
@@ -191,41 +205,104 @@ uint8_t MPU_DMP_Init(void)
 }
 
 
-
 //得到dmp处理后的数据(注意,本函数需要比较多堆栈,局部变量有点多)
-//pitch:俯仰角 精度:0.1°   范围:-90.0° <---> +90.0°
-//roll:横滚角  精度:0.1°   范围:-180.0°<---> +180.0°
-//yaw:航向角   精度:0.1°   范围:-180.0°<---> +180.0°
+//rpy:欧拉角
+//rpy[0]: pitch:俯仰角 精度:0.1°   范围:-90.0° <---> +90.0°
+//rpy[1]: roll:横滚角  精度:0.1°   范围:-180.0°<---> +180.0°
+//rpy[2]: yaw:航向角   精度:0.1°   范围:-180.0°<---> +180.0°
+//gyro :角速度（rad/s）
+//accel:加速度（m/s^2）
+//quat :四元数（float格式）
 //返回值:0,正常
 //    其他,失败
-uint8_t MPU_DMP_GetData(short *gyro,short *accel ,float *pitch,float *roll,float *yaw)
+//uint8_t MPU_DMP_ReadData(float *gyro, float *accel ,float *quat, float *rpy)
+uint8_t MPU_DMP_ReadData(IMU_Data *imu)
 {
-	float q0=1.0f,q1=0.0f,q2=0.0f,q3=0.0f;
+	//float q0=1.0f,q1=0.0f,q2=0.0f,q3=0.0f;
 	unsigned long sensor_timestamp;
 	short sensors;
 	unsigned char more;
-	long quat[4]; 
-	if(dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more))return 1;	 
+  short gyro_raw[3]; //raw gyro 
+  short accel_raw[3]; //raw accel
+	long quat_raw[4]; //q30格式的四元数
+	if(dmp_read_fifo(gyro_raw, accel_raw, quat_raw, &sensor_timestamp, &sensors, &more))return 1;	 
 	/* Gyro and accel data are written to the FIFO by the DMP in chip frame and hardware units.
 	 * This behavior is convenient because it keeps the gyro and accel outputs of dmp_read_fifo and mpu_read_fifo consistent.
 	**/
-	/*if (sensors & INV_XYZ_GYRO )
-	send_packet(PACKET_TYPE_GYRO, gyro);
+	if (sensors & INV_XYZ_GYRO )
+  {
+    for(int i = 0; i < 3; ++i)
+    {
+      imu->gyro[i] = gyro_raw[i] * GYRO_FACTOR;
+    }
+  }
+  else
+    return 2;
+	//send_packet(PACKET_TYPE_GYRO, gyro);
 	if (sensors & INV_XYZ_ACCEL)
-	send_packet(PACKET_TYPE_ACCEL, accel); */
+  {
+    for(int i = 0; i < 3; ++i)
+    {
+      imu->accel[i] = accel_raw[i] * ACCEL_FACTOR;
+    }
+  }
+  else
+    return 3;
+	//send_packet(PACKET_TYPE_ACCEL, accel); 
 	/* Unlike gyro and accel, quaternions are written to the FIFO in the body frame, q30.
 	 * The orientation is set by the scalar passed to dmp_set_orientation during initialization. 
 	**/
 	if(sensors&INV_WXYZ_QUAT) 
 	{
-		q0 = quat[0] / q30;	//q30格式转换为浮点数
-		q1 = quat[1] / q30;
-		q2 = quat[2] / q30;
-		q3 = quat[3] / q30; 
-		//计算得到俯仰角/横滚角/航向角
-		*pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;	// pitch
-		*roll  = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3;	// roll
-		*yaw   = atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3;	//yaw
-	}else return 2;
+    for(int i = 0; i < 4; i++)
+    {
+      imu->quat[i] = quat_raw[i] / q30;  //q30格式转换为浮点数
+    }
+		//计算得到欧拉角（横滚角/俯仰角/航向角）
+        imu->rpy[0] = atan2(2 * imu->quat[2] * imu->quat[3] + 2 * imu->quat[0] * imu->quat[1], -2 * imu->quat[1] * imu->quat[1] - 2 * imu->quat[2] * imu->quat[2] + 1);	// roll
+		imu->rpy[1] = asin(-2 * imu->quat[1] * imu->quat[3] + 2 * imu->quat[0]* imu->quat[2]);	// pitch
+		imu->rpy[2] = atan2(2*(imu->quat[1] * imu->quat[2] + imu->quat[0] * imu->quat[3]), imu->quat[0] * imu->quat[0] + imu->quat[1] * imu->quat[1] - imu->quat[2] * imu->quat[2] - imu->quat[3] * imu->quat[3]);	//yaw
+	}
+  else 
+    return 4;
 	return 0;
 }
+
+
+////得到dmp处理后的数据(注意,本函数需要比较多堆栈,局部变量有点多)
+////pitch:俯仰角 精度:0.1°   范围:-90.0° <---> +90.0°
+////roll:横滚角  精度:0.1°   范围:-180.0°<---> +180.0°
+////yaw:航向角   精度:0.1°   范围:-180.0°<---> +180.0°
+////返回值:0,正常
+////    其他,失败
+//uint8_t MPU_DMP_GetData(short *gyro,short *accel ,float *pitch,float *roll,float *yaw)
+//{
+//	float q0=1.0f,q1=0.0f,q2=0.0f,q3=0.0f;
+//	unsigned long sensor_timestamp;
+//	short sensors;
+//	unsigned char more;
+//	long quat[4]; 
+//	if(dmp_read_fifo(gyro, accel, quat, &sensor_timestamp, &sensors, &more))return 1;	 
+//	/* Gyro and accel data are written to the FIFO by the DMP in chip frame and hardware units.
+//	 * This behavior is convenient because it keeps the gyro and accel outputs of dmp_read_fifo and mpu_read_fifo consistent.
+//	**/
+//	/*if (sensors & INV_XYZ_GYRO )
+//	send_packet(PACKET_TYPE_GYRO, gyro);
+//	if (sensors & INV_XYZ_ACCEL)
+//	send_packet(PACKET_TYPE_ACCEL, accel); */
+//	/* Unlike gyro and accel, quaternions are written to the FIFO in the body frame, q30.
+//	 * The orientation is set by the scalar passed to dmp_set_orientation during initialization. 
+//	**/
+//	if(sensors&INV_WXYZ_QUAT) 
+//	{
+//		q0 = quat[0] / q30;	//q30格式转换为浮点数
+//		q1 = quat[1] / q30;
+//		q2 = quat[2] / q30;
+//		q3 = quat[3] / q30; 
+//		//计算得到俯仰角/横滚角/航向角
+//		*pitch = asin(-2 * q1 * q3 + 2 * q0* q2)* 57.3;	// pitch
+//		*roll  = atan2(2 * q2 * q3 + 2 * q0 * q1, -2 * q1 * q1 - 2 * q2* q2 + 1)* 57.3;	// roll
+//		*yaw   = atan2(2*(q1*q2 + q0*q3),q0*q0+q1*q1-q2*q2-q3*q3) * 57.3;	//yaw
+//	}else return 2;
+//	return 0;
+//}

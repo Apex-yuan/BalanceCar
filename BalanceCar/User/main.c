@@ -82,7 +82,8 @@ void TIM1_UP_IRQHandler(void)
     }
     else if(g_n1MsEventCount == 1)
     {
-      MPU_DMP_GetData(g_nGyro, g_nAccel, &g_fPitch, &g_fRoll, &g_fYaw);
+      //MPU_DMP_GetData(g_nGyro, g_nAccel, &g_fPitch, &g_fRoll, &g_fYaw);
+      MPU_DMP_ReadData(&imu_data);
     }
     else if(g_n1MsEventCount == 2)
     {
