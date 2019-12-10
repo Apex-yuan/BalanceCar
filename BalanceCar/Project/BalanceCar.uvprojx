@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\delay;..\BSP\tim;..\BSP\encoder;..\BSP\i2c;..\BSP\motor;..\BSP\mpu6050;..\Libraries\eMPL;..\BSP\systick;..\BSP</IncludePath>
+              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\delay;..\BSP\tim;..\BSP\encoder;..\BSP\i2c;..\BSP\motor;..\BSP\mpu6050;..\Libraries\eMPL;..\BSP\systick;..\BSP;..\BSP\led</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -586,6 +586,11 @@
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\led\led.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1219,6 +1224,11 @@
               <FileName>bsp.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\bsp.c</FilePath>
+            </File>
+            <File>
+              <FileName>led.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\led\led.c</FilePath>
             </File>
           </Files>
         </Group>

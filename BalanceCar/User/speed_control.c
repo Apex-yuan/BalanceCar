@@ -30,8 +30,8 @@ uint16_t g_nSpeedControlPeriod;
 
 // float g_fBTSpeedSet = 0;
 
-float SPEED_CONTROL_P = 300;//300;//350;
-float SPEED_CONTROL_I = 0.6;//25;
+float SPEED_CONTROL_P = 400;
+float SPEED_CONTROL_I = 2.0;
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/

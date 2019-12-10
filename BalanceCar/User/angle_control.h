@@ -27,6 +27,10 @@
 #define CAR_ANGLE_SET   0
 #define CAR_ANGLE_SPEED_SET  0
 
+#define DEG2RAD(x)   (x * 0.01745329252) // *PI/180
+#define RAD2DEG(x)   (x * 57.2957795131) // *180/PI
+
+/* Exported variables ------------------------------------------------------- */
 extern float g_fCarAngle;
 extern float g_fGyroscopeAngleSpeed;
 extern float g_fAngleControlOut;

@@ -31,6 +31,7 @@ void bsp_init(void)
   // __disable_irq();
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置中断优先级分组
   systick_init();
+  led_init();
   usart1_init(115200);
   usart3_init(9600);
   
@@ -38,6 +39,7 @@ void bsp_init(void)
   motor_init();
   encoder_init();
   while(MPU_DMP_Init());
+  led_off(LED0);
   // delay_ms(10);
   // MPU_DMP_Init();
   // while(1)

@@ -24,8 +24,8 @@ float g_fAngleControlOut;
 // short g_nGyro[3], g_nAccel[3];
 // float g_fPitch, g_fRoll, g_fYaw;
 
-float ANGLE_CONTROL_P = 64;//64;//80;//90
-float ANGLE_CONTROL_D = 0.12;//0.12;//0.15;//0.2
+float ANGLE_CONTROL_P = 67.5;
+float ANGLE_CONTROL_D = 3.0;
 
 /*车模跌倒标志位*/
 bool g_bFallFlag = 0;
@@ -43,8 +43,8 @@ void AngleControl(void)
   float fValue;
 
   /* 获取倾角rad和角速度rad/s */
-	g_fCarAngle = imu_data.rpy[0]; //g_fRoll;
-  g_fGyroscopeAngleSpeed = imu_data.gyro[0]; //(float)g_nGyro[0];
+	g_fCarAngle = RAD2DEG(imu_data.rpy[0]); //g_fRoll;
+  g_fGyroscopeAngleSpeed = RAD2DEG(imu_data.gyro[0]); //(float)g_nGyro[0];
   
 	fValue = (g_fCarAngle - CAR_ANGLE_SET) * ANGLE_CONTROL_P + 
            (g_fGyroscopeAngleSpeed - CAR_ANGLE_SPEED_SET) * ANGLE_CONTROL_D;
