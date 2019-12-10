@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "mpu6050.h"
+#include <stdbool.h>
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
@@ -29,6 +30,7 @@
 extern float g_fCarAngle;
 extern float g_fGyroscopeAngleSpeed;
 extern float g_fAngleControlOut;
+extern bool g_bFallFlag;
 // extern short g_nGyro[3], g_nAccel[3];
 // extern float g_fPitch, g_fRoll, g_fYaw;
 /* Exported functions ------------------------------------------------------- */

@@ -13,6 +13,7 @@
 /* Includes ------------------------------------------------------------------*/ 
 #include "angle_control.h"
 #include "virtual_oscilloscope.h"
+
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -25,6 +26,9 @@ float g_fAngleControlOut;
 
 float ANGLE_CONTROL_P = 64;//64;//80;//90
 float ANGLE_CONTROL_D = 0.12;//0.12;//0.15;//0.2
+
+/*³µÄ£µøµ¹±êÖ¾Î»*/
+bool g_bFallFlag = 0;
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
@@ -46,6 +50,16 @@ void AngleControl(void)
            (g_fGyroscopeAngleSpeed - CAR_ANGLE_SPEED_SET) * ANGLE_CONTROL_D;
 	g_fAngleControlOut = fValue;
   
+  //µøµ¹¼ì²â
+  if(g_fCarAngle > 50 || g_fCarAngle < (-50))
+  {
+    g_bFallFlag = 1;
+  }
+  else
+  {
+    g_bFallFlag = 0;
+  }
+
   //ÐéÄâÊ¾²¨Æ÷
   g_fware[0] = g_fCarAngle;
   g_fware[1] = g_fGyroscopeAngleSpeed;

@@ -1,82 +1,109 @@
+/**
+  ******************************************************************************
+  * @file    motor_control.c 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-10
+  * @brief   电机控制输出
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/ 
 #include "motor_control.h"
 #include "angle_control.h"
 #include "speed_control.h"
 #include "direction_control.h"
+#include "motor.h"
+#include <math.h>
 #include "virtual_oscilloscope.h"
 
-float g_fLeftMotorOut = 0;
-float g_fRightMotorOut = 0;
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+static float g_fLeftMotorOut = 0;
+static float g_fRightMotorOut = 0;
+/* Private function prototypes -----------------------------------------------*/
 
+/* Private functions ---------------------------------------------------------*/
 
+/**
+  * @brief  电机控制输出函数
+  * @param  None
+  * @retval None
+  */
 void MotorOutput(void)
-{
-  int nLeft,nRight;
-  
-  #if 0
+{ 
+  #if 0  //关闭电机输出
     g_fLeftMotorOut = 0;
     g_fRightMotorOut = 0;
-  #elif 0   
+  #elif 0  //直立控制调试 
     g_fLeftMotorOut = g_fAngleControlOut;
     g_fRightMotorOut = g_fAngleControlOut;
-  #elif 0
-    g_fLeftMotorOut = g_fAngleControlOut + g_fSpeedControlOut;
-    g_fRightMotorOut = g_fAngleControlOut + g_fSpeedControlOut;
-  #else
-    g_fLeftMotorOut = g_fAngleControlOut + g_fSpeedControlOut - g_fDirectionControlOut;
-    g_fRightMotorOut = g_fAngleControlOut + g_fSpeedControlOut + g_fDirectionControlOut;
+  #elif 0 //直立+速度控制调试
+    g_fLeftMotorOut = g_fAngleControlOut - g_fSpeedControlOut;
+    g_fRightMotorOut = g_fAngleControlOut - g_fSpeedControlOut;
+  #elif 0 
+    g_fLeftMotorOut = -g_fDirectionControlOut;
+    g_fRightMotorOut = g_fDirectionControlOut;
+  #else  //正常模式
+    g_fLeftMotorOut = g_fAngleControlOut - g_fSpeedControlOut - g_fDirectionControlOut;
+    g_fRightMotorOut = g_fAngleControlOut - g_fSpeedControlOut + g_fDirectionControlOut;
   #endif
-  g_fware[5] = g_fAngleControlOut + g_fSpeedControlOut;
-  g_fware[6] = g_fAngleControlOut + g_fSpeedControlOut;
+  g_fware[7] = g_fAngleControlOut - g_fSpeedControlOut;
+  //g_fware[6] = g_fAngleControlOut - g_fSpeedControlOut;
   
-  if(g_fLeftMotorOut >= 1000)
-    g_fLeftMotorOut = 1000;
-  if(g_fRightMotorOut >= 1000)
-    g_fRightMotorOut = 1000;
-  if(g_fLeftMotorOut <= -1000)
-    g_fLeftMotorOut = -1000;
-  if(g_fRightMotorOut <= -1000)
-    g_fRightMotorOut = -1000;
-  
-  nLeft = (int)g_fLeftMotorOut;
-  nRight = (int)g_fRightMotorOut;
-  
-  if(nLeft < 0)
+  /*电机驱动为H桥电路上下晶体管不能同时导通，增加电机转速方向更换过程中的输出清零操作，以保护电机驱动器 （测试可行后在添加）*/  
+   if(g_fLeftMotorOut > 0 && g_fCarSpeed < 0 || g_fLeftMotorOut < 0 && g_fCarSpeed > 0)
+   {
+     motor_setPwm(LEFT_MOTOR, (uint16_t) 0);
+   }
+   if(g_fRightMotorOut > 0 && g_fCarSpeed < 0 || g_fRightMotorOut < 0 && g_fCarSpeed > 0)
+   {
+     motor_setPwm(RIGHT_MOTOR, (uint16_t) 0);
+   }
+
+  //左轮电机
+  if(g_fLeftMotorOut > 0)
   {
-    //g_fLeftMotorOut += MOTOR_OUT_DEAD_VAL;
-    GPIO_SetBits(GPIOB, GPIO_Pin_14 );				    
-    GPIO_ResetBits(GPIOB, GPIO_Pin_15 );
-    nLeft = (-nLeft);
+    motor_setDirection(LEFT_MOTOR, FRONT);
+    g_fLeftMotorOut = g_fLeftMotorOut + LEFT_MOTOR_OUT_DEAD_ZONE; // +
   }
   else
   {
-    //g_fLeftMotorOut -= MOTOR_OUT_DEAD_VAL;
-    GPIO_SetBits(GPIOB,GPIO_Pin_15);
-    GPIO_ResetBits(GPIOB,GPIO_Pin_14);
-    nLeft = nLeft;
+    motor_setDirection(LEFT_MOTOR, BACK);
+    g_fLeftMotorOut = g_fLeftMotorOut - LEFT_MOTOR_OUT_DEAD_ZONE; // +
   }
-  
-  if(nRight < 0)
+  //右轮电机
+  if(g_fRightMotorOut > 0)
   {
-    //g_fRightMotorOut += MOTOR_OUT_DEAD_VAL;
-    GPIO_SetBits(GPIOB,GPIO_Pin_13);
-    GPIO_ResetBits(GPIOB,GPIO_Pin_12);
-    nRight = (-nRight);
+    motor_setDirection(RIGHT_MOTOR, FRONT);
+    g_fRightMotorOut = g_fRightMotorOut + RIGHT_MOTOR_OUT_DEAD_ZONE; // +
   }
   else
   {
-    //g_fRightMotorOut -= MOTOR_OUT_DEAD_VAL;
-    GPIO_SetBits(GPIOB,GPIO_Pin_12);
-    GPIO_ResetBits(GPIOB,GPIO_Pin_13);
-    nRight = nRight;
+    motor_setDirection(RIGHT_MOTOR, BACK);
+    g_fRightMotorOut = g_fRightMotorOut - RIGHT_MOTOR_OUT_DEAD_ZONE; // +
   }
+
+  //电机输出限幅
+  g_fLeftMotorOut = constrain(g_fLeftMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
+  g_fRightMotorOut = constrain(g_fRightMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
+
+  motor_setPwm(LEFT_MOTOR, (uint16_t) fabs(g_fLeftMotorOut));
+  motor_setPwm(RIGHT_MOTOR, (uint16_t) fabs(g_fRightMotorOut));
+//  motor_setDirection(LEFT_MOTOR, FRONT);
+//  motor_setDirection(RIGHT_MOTOR, BACK);
+//  motor_setPwm(LEFT_MOTOR, 200);
+//  motor_setPwm(RIGHT_MOTOR, 200);
   
-  TIM_SetCompare3(TIM2,(uint16_t)nLeft);
-  TIM_SetCompare4(TIM2,(uint16_t)nRight);
-  
-  if(g_fCarAngle > 50 || g_fCarAngle < (-50))
+  //跌倒关闭电机输出
+  if(g_bFallFlag == 1)
 	{
-		TIM_SetCompare3(TIM2,0);
-		TIM_SetCompare4(TIM2,0);  
+		motor_setPwm(LEFT_MOTOR, 0);
+    motor_setPwm(RIGHT_MOTOR, 0); 
 	}
 }
 
