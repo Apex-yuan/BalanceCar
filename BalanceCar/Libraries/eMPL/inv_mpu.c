@@ -25,7 +25,7 @@
 #include "inv_mpu.h"
 
 #include "mpu6050.h"
-#include "delay.h"
+#include "systick.h"
 #include "usart1.h"
 
 void get_ms(unsigned long *time)

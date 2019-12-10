@@ -3,7 +3,8 @@
         {
             "name": "Win32",
             "includePath": [
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/BalanceCar/BSP/systick"
             ],
             "defines": [
                 "USE_STDPERIPH_DRIVER",
