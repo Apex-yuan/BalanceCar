@@ -11,15 +11,7 @@
   */
 
 /* Includes ------------------------------------------------------------------*/ 
-#include "usart1.h"
-#include "usart3.h"
-#include "systick.h"
-#include "encoder.h"
-#include "motor.h"
-#include "i2c.h"
-#include "mpu6050.h"
-#include "tim.h"
-
+#include "bsp.h"
 #include "angle_control.h"
 #include "speed_control.h"
 #include "direction_control.h"
@@ -46,39 +38,7 @@ float g_nSpeedControlCount = 0;
   */
 int main(void)
 {
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2);
-  //delay_init();
-  systick_init();
-  usart1_init(115200);
-  usart3_init(9600);
-  
-  timer_init(999,71);
-  motor_init();
-  encoder_init();
-  while(MPU_DMP_Init());
-//  delay_ms(10);
-//  MPU_DMP_Init();
-//  while(1)
-//  {
-//    uint8_t res = MPU_DMP_Init();
-//    if(res == 0)
-//    {
-//      break;
-//    }
-//    else
-//    {
-//      printf("res=%d",res);
-//    }  
-//  }
-  
-  // g_fAngleControlOut = 0;
-  // g_fCarAngle = 0;
-  // g_fGyroscopeAngleSpeed = 0;
-  // g_fLeftMotorOut = g_fRightMotorOut = 0;
-  delay_ms(1000);
-  //delay_ms(1000);
-  //delay_ms(1000);
-  delay_ms(1000);
+  bsp_init();
   
   while(1)
   {
@@ -86,12 +46,6 @@ int main(void)
     //vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
     //delay_ms(10);
 
-  // if(g_bNewLineFlag == 1)
-  // {
-  //   g_bNewLineFlag = 0;
-  //   ProtocolCpyData();
-  //   Protocol();
-  // }
   protocol_process();
     printf("accel_x:%.3f,accel_y:%.3f,accel_z:%.3f\n",imu_data.accel[0],imu_data.accel[1],imu_data.accel[2]);
     printf("gyro_x:%.3f,gyro_y:%.3f,gyro_z:%.3f\n",imu_data.gyro[0],imu_data.gyro[1],imu_data.gyro[2]);

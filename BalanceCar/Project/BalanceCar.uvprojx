@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\delay;..\BSP\tim;..\BSP\encoder;..\BSP\i2c;..\BSP\motor;..\BSP\mpu6050;..\Libraries\eMPL;..\BSP\systick</IncludePath>
+              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\delay;..\BSP\tim;..\BSP\encoder;..\BSP\i2c;..\BSP\motor;..\BSP\mpu6050;..\Libraries\eMPL;..\BSP\systick;..\BSP</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -581,6 +581,11 @@
               <FileName>systick.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\systick\systick.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1209,6 +1214,11 @@
               <FileName>systick.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\BSP\systick\systick.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp.c</FilePath>
             </File>
           </Files>
         </Group>
