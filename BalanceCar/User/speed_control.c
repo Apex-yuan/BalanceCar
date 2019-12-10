@@ -1,8 +1,25 @@
+/**
+  ******************************************************************************
+  * @file    speed_control.c 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-10
+  * @brief   速度控制相关的代码
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/ 
 #include "speed_control.h"
 #include "encoder.h"
 #include "virtual_oscilloscope.h"
+#include "protocol.h"
 
-
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 float g_fCarSpeed,g_fCarSpeedOld;
 float g_fCarPosition;
 int g_nLeftMotorPulseSigma, g_nRightMotorPulseSigma;
@@ -15,9 +32,15 @@ uint16_t g_nSpeedControlPeriod;
 
 float SPEED_CONTROL_P = 300;//300;//350;
 float SPEED_CONTROL_I = 0.6;//25;
+/* Private function prototypes -----------------------------------------------*/
 
+/* Private functions ---------------------------------------------------------*/
 
-//每5ms执行一次累加20次
+/**
+  * @brief  获取电机的脉冲数，中断中执行：每5ms执行一次累加20次
+  * @param  None
+  * @retval None
+  */
 void GetMotorPulse(void)
 {
   int32_t nLeftMotorPulse,nRightMotorPulse;
@@ -31,7 +54,11 @@ void GetMotorPulse(void)
   g_nRightMotorPulseSigma += nRightMotorPulse;
 }
 
-
+/**
+  * @brief  速度控制函数
+  * @param  None
+  * @retval None
+  */
 void SpeedControl(void)
 {
   float fDelta;
@@ -52,6 +79,11 @@ void SpeedControl(void)
 
 }
 
+/**
+  * @brief  速度控制平滑输出
+  * @param  None
+  * @retval None
+  */
 void SpeedControlOutput(void)
 {
   float fDelta;

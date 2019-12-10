@@ -28,6 +28,10 @@
 #define BYTE2(dwTemp) (*((char *)(&dwTemp) + 2))
 #define BYTE3(dwTemp) (*((char *)(&dwTemp) + 3))
 
+/* Exported variables ------------------------------------------------------- */
+extern float g_fBTSpeedSet;
+extern float g_fBTDirectionSet;
+
 /* Exported functions ------------------------------------------------------- */
 void usart3_irq(void);
 void protocol_process(void);
