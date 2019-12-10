@@ -29,7 +29,7 @@ int main(void)
   usart1_init(115200);
   usart3_init(9600);
   
-  TIM1_TIMER_Init(999,71);
+  timer_init(999,71);
   motor_init();
   encoder_init();
   while(MPU_DMP_Init());

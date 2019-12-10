@@ -1,11 +1,36 @@
+/**
+  ******************************************************************************
+  * @file    tim.h 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-10
+  * @brief   初始化定时器
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
+
+/* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __TIM_H
 #define __TIM_H
 
+#ifdef __cplusplus
+ extern "C" {
+#endif 
+
+/* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
 
+/* Exported types ------------------------------------------------------------*/
+/* Exported constants --------------------------------------------------------*/
+/* Exported macro ------------------------------------------------------------*/
+/* Exported functions ------------------------------------------------------- */
+void timer_init(uint16_t arr, uint16_t psc);
 
-void TIM1_TIMER_Init(uint16_t arr, uint16_t psc);
-void Timerx_Init(u16 arr,u16 psc);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif /* __TIM_H */
 

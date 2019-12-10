@@ -1,10 +1,33 @@
+/**
+  ******************************************************************************
+  * @file    tim.c 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-10
+  * @brief   定时器初始化
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/ 
 #include "tim.h"
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
 
-//#include "angle_control.h"
-//#include "speed_control.h"
-//#include "motor_control.h"
+/* Private function prototypes -----------------------------------------------*/
 
-void TIM1_TIMER_Init(uint16_t arr, uint16_t psc)
+/* Private functions ---------------------------------------------------------*/
+
+/**
+  * @brief  定时器1初始化为定时器模式
+  * @param  arr  自动重装载初值 
+  * @param  psc  预分频因子
+  * @retval None
+  */
+static void TIM1_TIMER_Init(uint16_t arr, uint16_t psc)
 {
   TIM_TimeBaseInitTypeDef  TIM_TimeBaseInitStructure;
   NVIC_InitTypeDef  NVIC_InitStructure;
@@ -34,6 +57,18 @@ void TIM1_TIMER_Init(uint16_t arr, uint16_t psc)
   TIM_Cmd(TIM1, ENABLE);
 }
 
+/**
+  * @brief  定时器1初始化为定时器模式
+  * @param  arr  自动重装载初值 
+  * @param  psc  预分频因子
+  * @retval None
+  */
+void timer_init(uint16_t arr, uint16_t psc)
+{
+  TIM1_TIMER_Init(arr, psc);  
+}
+
+/* 该中断服务函数置于应用层实现 */
 ////中断服务函数
 //void TIM1_UP_IRQHandler(void) 
 //{
