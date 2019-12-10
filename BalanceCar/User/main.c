@@ -1,3 +1,16 @@
+/**
+  ******************************************************************************
+  * @file    main.c 
+  * @author  Apexyuan
+  * @version V1.0.0
+  * @date    2019-12-10
+  * @brief   main body
+  ******************************************************************************
+  * @attention
+  ******************************************************************************
+  */
+
+/* Includes ------------------------------------------------------------------*/ 
 #include "usart1.h"
 #include "usart3.h"
 #include "delay.h"
@@ -12,17 +25,25 @@
 #include "direction_control.h"
 #include "motor_control.h"
 #include "protocol.h"
-
+/* Private typedef -----------------------------------------------------------*/
+/* Private define ------------------------------------------------------------*/
+/* Private macro -------------------------------------------------------------*/
 #define CONTROL_PERIOD 5 //5ms
 #define SPEED_CONTROL_COUNT 20 //20*5=100ms
 #define DIRECTION_CONTROL_COUNT 2 //2*5=10ms
-
-
+/* Private variables ---------------------------------------------------------*/
 float g_n1MsEventCount = 0;
 float g_nSpeedControlCount = 0;
 
+/* Private function prototypes -----------------------------------------------*/
 
+/* Private functions ---------------------------------------------------------*/
 
+/**
+  * @brief  Main program
+  * @param  None
+  * @retval None
+  */
 int main(void)
 {
   delay_init();
@@ -60,8 +81,11 @@ int main(void)
   }
 }
 
-
-//中断服务函数
+/**
+  * @brief  定时器1的中断服务函数
+  * @param  None
+  * @retval None
+  */
 void TIM1_UP_IRQHandler(void) 
 {
   if(TIM_GetFlagStatus(TIM1, TIM_IT_Update) != RESET)
