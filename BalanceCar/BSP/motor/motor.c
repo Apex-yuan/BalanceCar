@@ -102,10 +102,12 @@ void motor_setPwm(MotorChoice_t choice, uint16_t pwm)
   {
     case LEFT_MOTOR :
       TIM_SetCompare4(MOTOR_TIM, pwm);
+      break;
     case RIGHT_MOTOR :
       TIM_SetCompare3(MOTOR_TIM, pwm);
+      break;
     default:
-      return;
+      break;
   }
 }
 
@@ -127,19 +129,23 @@ void motor_setDirection(MotorChoice_t choice, MotorDirection_t direction)
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN2_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN1_PIN);
+          break;
         }
         case STOP :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN1_PIN | L_MOTOR_IN2_PIN);
+          break;
         }
         case BACK :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN1_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN2_PIN);
+          break;
         }
         default :
-          return;
+          break;
       }
+      break;
     }
     case RIGHT_MOTOR :
     {
@@ -149,22 +155,26 @@ void motor_setDirection(MotorChoice_t choice, MotorDirection_t direction)
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN2_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN1_PIN);
+          break;
         }
         case STOP :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN1_PIN | R_MOTOR_IN2_PIN);
+          break;
         }
         case BACK :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN1_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN2_PIN);
+          break;
         }
         default :
-          return;
+          break;
       }
     }
+    break;
     default:
-      return;
+      break;
   }
 }
 
