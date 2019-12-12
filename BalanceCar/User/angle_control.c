@@ -24,8 +24,8 @@ float g_fAngleControlOut;
 // short g_nGyro[3], g_nAccel[3];
 // float g_fPitch, g_fRoll, g_fYaw;
 
-float ANGLE_CONTROL_P = 67.5;
-float ANGLE_CONTROL_D = 3.0;
+float ANGLE_CONTROL_P = 50.5;//67.5;
+float ANGLE_CONTROL_D = 1.0;//3.0;
 
 /*车模跌倒标志位*/
 bool g_bFallFlag = 0;
@@ -55,10 +55,10 @@ void AngleControl(void)
   {
     g_bFallFlag = 1;
   }
-  else
-  {
-    g_bFallFlag = 0;
-  }
+  // else
+  // {
+  //   g_bFallFlag = 0;
+  // }
 
   //虚拟示波器
   g_fware[0] = g_fCarAngle;

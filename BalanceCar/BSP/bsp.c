@@ -35,11 +35,13 @@ void bsp_init(void)
   usart1_init(115200);
   usart3_init(9600);
   
+  delay_ms(2000); /* ÑÓÊ±2s¿ª»ú */
+  
   timer_init(999,71);
   motor_init();
   encoder_init();
   while(MPU_DMP_Init());
-  led_off(LED0);
+  led_on(LED0);
   // delay_ms(10);
   // MPU_DMP_Init();
   // while(1)
