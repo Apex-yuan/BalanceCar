@@ -25,8 +25,8 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 //motor setting
-#define LEFT_MOTOR_OUT_DEAD_ZONE   20//35
-#define RIGHT_MOTOR_OUT_DEAD_ZONE  20//30
+#define LEFT_MOTOR_OUT_DEAD_ZONE   30//25//20//35
+#define RIGHT_MOTOR_OUT_DEAD_ZONE  30//25//20//30
 #define MAX_MOTOR_OUT        1000
 #define MIN_MOTOR_OUT       -1000
    
