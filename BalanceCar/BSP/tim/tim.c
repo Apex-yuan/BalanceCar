@@ -54,7 +54,7 @@ static void TIM1_TIMER_Init(uint16_t arr, uint16_t psc)
   NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
   NVIC_Init(&NVIC_InitStructure);
   
-  TIM_Cmd(TIM1, ENABLE);
+  TIM_Cmd(TIM1, DISABLE);
 }
 
 /**

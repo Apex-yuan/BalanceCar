@@ -43,7 +43,7 @@ void MotorOutput(void)
   #if 0  //关闭电机输出
     g_fLeftMotorOut = 0;
     g_fRightMotorOut = 0;
-  #elif 1  //直立控制调试 
+  #elif 0  //直立控制调试 
     g_fLeftMotorOut = g_fAngleControlOut;
     g_fRightMotorOut = g_fAngleControlOut;
   #elif 1 //直立+速度控制调试
@@ -94,22 +94,13 @@ void MotorOutput(void)
   g_fware[5] = g_fLeftMotorOut;
   g_fware[6] = g_fRightMotorOut;
 
-  //电机输出限幅
-  g_fLeftMotorOut = constrain(g_fLeftMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
-  g_fRightMotorOut = constrain(g_fRightMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
-#if 0 //1关闭电机输出，测试用
-  motor_setPwm(LEFT_MOTOR, 0);
-  motor_setPwm(RIGHT_MOTOR, 0);
-#else //正常输出
-  motor_setPwm(LEFT_MOTOR, (uint16_t) fabs(g_fLeftMotorOut));
-  motor_setPwm(RIGHT_MOTOR, (uint16_t) fabs(g_fRightMotorOut));
-#endif 
+  
   
   //跌倒关闭电机输出
   if(g_bFallFlag == 1) //当前车模处于跌倒状态
 	{
-		motor_setPwm(LEFT_MOTOR, 0);
-    motor_setPwm(RIGHT_MOTOR, 0);
+		g_fLeftMotorOut = 0;
+      g_fRightMotorOut = 0;
 
 
     #if 0 //ENABLE_CATAPULT_START
@@ -128,16 +119,13 @@ void MotorOutput(void)
     }
     #elif 1
     g_nCatapultStartCount++; //每个电机控制周期自加
-    // static uint32_t current_time = millis();
-    if(g_nCatapultStartCount >= 2000/5 && g_nCatapultStartCount < 2150/5)
+    if(g_nCatapultStartCount >= 500/5 )//&& g_nCatapultStartCount < 2150/5)
     {
-      motor_setPwm(LEFT_MOTOR, 500);
-      motor_setPwm(RIGHT_MOTOR, 500);
+      g_fLeftMotorOut = 3000;
+      g_fRightMotorOut = 3000;
     }
-    if(g_fCarAngle > -35 && g_fCarAngle < 35)
+    if(g_fCarAngle > -40 && g_fCarAngle < 40)
     {
-      motor_setPwm(LEFT_MOTOR, (uint16_t) fabs(g_fLeftMotorOut));
-      motor_setPwm(RIGHT_MOTOR, (uint16_t) fabs(g_fRightMotorOut));
       g_bFallFlag = 0; //清除跌倒标志位
       g_nCatapultStartCount = 0;    
     }
@@ -147,7 +135,18 @@ void MotorOutput(void)
       g_bFallFlag = 0;
     }
     #endif
-	}
+  }
+    
+    //电机输出限幅
+  g_fLeftMotorOut = constrain(g_fLeftMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
+  g_fRightMotorOut = constrain(g_fRightMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
+#if 0 //1关闭电机输出，测试用
+  motor_setPwm(LEFT_MOTOR, 0);
+  motor_setPwm(RIGHT_MOTOR, 0);
+#else //正常输出
+  motor_setPwm(LEFT_MOTOR, (uint16_t) fabs(g_fLeftMotorOut));
+  motor_setPwm(RIGHT_MOTOR, (uint16_t) fabs(g_fRightMotorOut));
+#endif 
 }
 
 

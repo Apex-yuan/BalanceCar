@@ -27,7 +27,13 @@
 /* Private variables ---------------------------------------------------------*/
 float g_n1MsEventCount = 0;
 float g_nSpeedControlCount = 0;
+uint32_t tTime[5];
 
+/* 系统在刚初始化完成时，数据输出不是很稳定，因而需要一定的延时时间，等待数据稳定再让电机输出。
+   这里主要是为了服务于初始状态下的弹射起步，若没有等待到数据稳定，弹射起步便无法正常触发。
+*/
+uint32_t g_ndelayDeparturecount = 0;
+uint32_t g_ndelayDeparturetime = 2000;  //单位ms  这里的时间是指初始化完成后的延时时间
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
@@ -39,20 +45,30 @@ float g_nSpeedControlCount = 0;
   */
 int main(void)
 {
-  bsp_init();
+  uint32_t tmp;
+  bsp_init(); //初始化板级支持包
+  tmp = millis();
+  for(uint8_t i = 0; i < 5; ++i)
+  {
+    tTime[i] = tmp;
+  }
   
   while(1)
   {
-    vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
-    delay_ms(10);
-
-  protocol_process();
-    //led_toggle(LED0);
-    //delay_ms(200);
-//     printf("accel_x:%.3f,accel_y:%.3f,accel_z:%.3f\n",imu_data.accel[0],imu_data.accel[1],imu_data.accel[2]);
-//     printf("gyro_x:%.3f,gyro_y:%.3f,gyro_z:%.3f\n",imu_data.gyro[0],imu_data.gyro[1],imu_data.gyro[2]);
-//     printf("roll:%.3f,pitch:%.3f,yow:%.3f\n\n",imu_data.rpy[0],imu_data.rpy[1],imu_data.rpy[2]);
-// delay_ms(1000);
+    /* 以20hz的频率闪烁LED0 */
+    if((millis() - tTime[0] >= 1000/20) && (g_ndelayDeparturecount >= g_ndelayDeparturetime))
+    {
+      led_toggle(LED0);
+      tTime[0] = millis();
+    }
+    /* 在车模启动之后,以10hz的频率向虚拟示波器发送数据 */
+    if(millis() - tTime[1] >= 1000/20)
+    {
+      vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
+      tTime[1] = millis();
+    }
+    /* 处理接收到的上位机数据 */
+    protocol_process();
   }
 }
 
@@ -68,6 +84,7 @@ void TIM1_UP_IRQHandler(void)
     TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
     //中断服务程序：
     g_n1MsEventCount ++;
+    g_ndelayDeparturecount++; //用于延迟发车计数
     
     g_nSpeedControlPeriod ++;
     SpeedControlOutput();
@@ -81,13 +98,16 @@ void TIM1_UP_IRQHandler(void)
     }
     else if(g_n1MsEventCount == 1)
     {
-      //MPU_DMP_GetData(g_nGyro, g_nAccel, &g_fPitch, &g_fRoll, &g_fYaw);
-      MPU_DMP_ReadData(&imu_data);
+      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
     }
     else if(g_n1MsEventCount == 2)
     {
       AngleControl();
-      MotorOutput();
+      if(g_ndelayDeparturecount >= g_ndelayDeparturetime) //到达发车时间
+      {
+        MotorOutput();
+        g_ndelayDeparturecount = g_ndelayDeparturetime + 1; //防止计数溢出
+      }
     }
     else if (g_n1MsEventCount == 3)
     {

@@ -28,35 +28,17 @@
   */
 void bsp_init(void)
 {
-  // __disable_irq();
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置中断优先级分组
   systick_init();
   led_init();
   usart1_init(115200);
   usart3_init(9600);
-  
-  delay_ms(2000); /* 延时2s开机 */
-  
-  timer_init(999,71);
   motor_init();
   encoder_init();
   while(MPU_DMP_Init());
+  timer_init(999,71);
+  TIM_Cmd(TIM1, ENABLE);
   led_on(LED0);
-  // delay_ms(10);
-  // MPU_DMP_Init();
-  // while(1)
-  // {
-  // uint8_t res = MPU_DMP_Init();
-  // if(res == 0)
-  // {
-  //     break;
-  // }
-  // else
-  // {
-  //     printf("res=%d",res);
-  // }  
-  // }
-  // __enable_irq();
 }
 
 
