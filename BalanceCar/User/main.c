@@ -11,14 +11,14 @@
   */
 
 /* Includes ------------------------------------------------------------------*/ 
-//#include "bsp.h"
-//#include "angle_control.h"
-//#include "speed_control.h"
-//#include "direction_control.h"
-//#include "motor_control.h"
-//#include "protocol.h"
-//#include "virtual_oscilloscope.h"
-#include "led.h"
+#include "bsp.h"
+#include "angle_control.h"
+#include "speed_control.h"
+#include "direction_control.h"
+#include "motor_control.h"
+#include "protocol.h"
+#include "virtual_oscilloscope.h"
+//#include "led.h"
 /* FreeRTOS */
 #include "FreeRTOS.h"
 #include "task.h"
@@ -57,10 +57,20 @@ int main(void)
 {
   BaseType_t xReturn = pdTRUE;
   
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
-  led_init();
-  usart1_init(115200);
-  
+  bsp_init();
+//  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+//  led_init();
+//  usart1_init(115200);
+//  while(MPU_DMP_Init());
+//  while(1)
+//  {
+////    led_on(LED0);
+////    delay_us(5000);
+////    led_off(LED0);
+////    delay_us(5000);
+//     MPU_DMP_ReadData(&imu_data);
+//    delay_ms(10);
+//  }
   xReturn = xTaskCreate((TaskFunction_t)startTask,
                         (const char *)"startTask",
                         (uint16_t)512,
@@ -142,58 +152,58 @@ static void ledTask(void *parameter)
   * @param  None
   * @retval None
   */
-//void TIM1_UP_IRQHandler(void) 
-//{
-//  if(TIM_GetFlagStatus(TIM1, TIM_IT_Update) != RESET)
-//  {  
-//    TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
-//    //中断服务程序：
-//    g_n1MsEventCount ++;
-//    g_ndelayDeparturecount++; //用于延迟发车计数
-//    
-//    g_nSpeedControlPeriod ++;
-//    SpeedControlOutput();
-//    g_nDirectionControlPeriod ++;
-//    DirectionControlOutput();
-//    
-//    if(g_n1MsEventCount >= CONTROL_PERIOD)
-//    {
-//      g_n1MsEventCount = 0;
-//      GetMotorPulse();
-//    }
-//    else if(g_n1MsEventCount == 1)
-//    {
-//      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
-//    }
-//    else if(g_n1MsEventCount == 2)
-//    {
-//      AngleControl();
-//      if(g_ndelayDeparturecount >= g_ndelayDeparturetime) //到达发车时间
-//      {
-//        MotorOutput();
-//        g_ndelayDeparturecount = g_ndelayDeparturetime + 1; //防止计数溢出
-//      }
-//    }
-//    else if (g_n1MsEventCount == 3)
-//    {
-//      g_nSpeedControlCount ++;
-//      if(g_nSpeedControlCount >= SPEED_CONTROL_COUNT)
-//      {
-//        SpeedControl();
-//        g_nSpeedControlCount = 0;
-//        g_nSpeedControlPeriod = 0;
-//      }
-//    }
-//    else if(g_n1MsEventCount == 4)
-//    {
-//      g_nDirectionControlCount ++;
-//      if(g_nDirectionControlCount >= DIRECTION_CONTROL_COUNT)
-//      {
-//        DirectionControl();
-//        g_nDirectionControlCount = 0;
-//        g_nDirectionControlPeriod = 0;
-//      }
-//    }
-//    
-//  }
-//}
+void TIM1_UP_IRQHandler(void) 
+{
+  if(TIM_GetFlagStatus(TIM1, TIM_IT_Update) != RESET)
+  {  
+    TIM_ClearITPendingBit(TIM1, TIM_IT_Update);
+    //中断服务程序：
+    g_n1MsEventCount ++;
+    g_ndelayDeparturecount++; //用于延迟发车计数
+    
+    g_nSpeedControlPeriod ++;
+    SpeedControlOutput();
+    g_nDirectionControlPeriod ++;
+    DirectionControlOutput();
+    
+    if(g_n1MsEventCount >= CONTROL_PERIOD)
+    {
+      g_n1MsEventCount = 0;
+      GetMotorPulse();
+    }
+    else if(g_n1MsEventCount == 1)
+    {
+      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
+    }
+    else if(g_n1MsEventCount == 2)
+    {
+      AngleControl();
+      if(g_ndelayDeparturecount >= g_ndelayDeparturetime) //到达发车时间
+      {
+        MotorOutput();
+        g_ndelayDeparturecount = g_ndelayDeparturetime + 1; //防止计数溢出
+      }
+    }
+    else if (g_n1MsEventCount == 3)
+    {
+      g_nSpeedControlCount ++;
+      if(g_nSpeedControlCount >= SPEED_CONTROL_COUNT)
+      {
+        SpeedControl();
+        g_nSpeedControlCount = 0;
+        g_nSpeedControlPeriod = 0;
+      }
+    }
+    else if(g_n1MsEventCount == 4)
+    {
+      g_nDirectionControlCount ++;
+      if(g_nDirectionControlCount >= DIRECTION_CONTROL_COUNT)
+      {
+        DirectionControl();
+        g_nDirectionControlCount = 0;
+        g_nDirectionControlPeriod = 0;
+      }
+    }
+    
+  }
+}

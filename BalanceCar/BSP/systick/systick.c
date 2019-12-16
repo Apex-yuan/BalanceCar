@@ -84,13 +84,20 @@ void systick_reset(void)
   * @param  delay time
   * @retval None
   */
-void delay_ms(uint32_t ms) 
-{ 
-	uint32_t target;
-	
-	target = millis() + ms;
-	while(millis() < target);
-} 
+//void delay_ms(uint32_t ms) 
+//{ 
+//	uint32_t target;
+//	
+//	target = millis() + ms;
+//	while(millis() < target);
+//} 
+void delay_ms(uint32_t ms)
+{
+  while(ms--)
+  {    
+    for(int i = 0; i < 2000; ++i);
+  }
+}
 
 /**
   * @brief  delay (us)
