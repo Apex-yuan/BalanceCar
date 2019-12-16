@@ -121,7 +121,7 @@ void delay_us(uint32_t us)
   * @param  None
   * @retval None
   */
-void SysTick_Handler(void)
-{
-  _ms_tick++;
-}
+//void SysTick_Handler(void)
+//{
+//  _ms_tick++;
+//}
