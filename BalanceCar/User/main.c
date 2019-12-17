@@ -67,22 +67,23 @@ int main(void)
 
 //  while(1)
 //  {
-//    g_fware[2] = 100;
+//    MPU_DMP_ReadData(&imu_data);
+//    g_fware[3] = imu_data.gyro[0] * 10000;
 //    vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
 //    delay_ms(10);
 //  }
 
-  xReturn = xTaskCreate((TaskFunction_t)startTask,
-                        (const char *)"startTask",
-                        (uint16_t)512,
-                        (void *)NULL,
-                        (UBaseType_t)1,
-                        (TaskHandle_t *)&startTaskHandle);
-  if(xReturn != pdFALSE)
-  {
-//    printf("启动任务创建成功\r\n");
-    vTaskStartScheduler();
-  }
+//  xReturn = xTaskCreate((TaskFunction_t)startTask,
+//                        (const char *)"startTask",
+//                        (uint16_t)512,
+//                        (void *)NULL,
+//                        (UBaseType_t)1,
+//                        (TaskHandle_t *)&startTaskHandle);
+//  if(xReturn != pdFALSE)
+//  {
+////    printf("启动任务创建成功\r\n");
+//    vTaskStartScheduler();
+//  }
   while(1);
 }
 
@@ -183,9 +184,9 @@ static void controlTask(void *parameter)
   while(1)
   {
     ulTaskNotifyTake(pdTRUE, portMAX_DELAY); // 获取任务通知
-    MPU_DMP_ReadData(&imu_data);
+    
     GetMotorPulse();
-    AngleControl();
+//    AngleControl();
     MotorOutput();
   }
 }
@@ -244,15 +245,17 @@ void TIM1_UP_IRQHandler(void)
     if(g_n1MsEventCount >= CONTROL_PERIOD)
     {
       g_n1MsEventCount = 0;
-//      GetMotorPulse();
+      GetMotorPulse();
     }
     else if(g_n1MsEventCount == 1)
     {
-//      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
+      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
     }
     else if(g_n1MsEventCount == 2)
     {
-      xReturn = xTaskNotifyGive(controlTaskHandle);
+      AngleControl();
+//      xReturn = xTaskNotifyGive(controlTaskHandle);
+      MotorOutput();
 //      AngleControl();
 //      if(g_ndelayDeparturecount >= g_ndelayDeparturetime) //到达发车时间
 //      {
@@ -265,13 +268,13 @@ void TIM1_UP_IRQHandler(void)
       g_nSpeedControlCount ++;
       if(g_nSpeedControlCount >= SPEED_CONTROL_COUNT)
       {
-//        SpeedControl();
+        SpeedControl();
         /* 向speedControlTask发送任务通知 */
-      xReturn = xTaskNotifyGive(speedControlTaskHandle);
-      if(xReturn != pdFALSE)
-      {
-        //printf("任务通知2发送成功\r\n");
-      }
+//      xReturn = xTaskNotifyGive(speedControlTaskHandle);
+//      if(xReturn != pdFALSE)
+//      {
+//        //printf("任务通知2发送成功\r\n");
+//      }
         g_nSpeedControlCount = 0;
         g_nSpeedControlPeriod = 0;
       }
@@ -281,9 +284,9 @@ void TIM1_UP_IRQHandler(void)
       g_nDirectionControlCount ++;
       if(g_nDirectionControlCount >= DIRECTION_CONTROL_COUNT)
       {
-//        DirectionControl();
+        DirectionControl();
         /* 向directionControlTask发送任务通知 */
-        xReturn = xTaskNotifyGive(directionControlTaskHandle);
+//        xReturn = xTaskNotifyGive(directionControlTaskHandle);
         g_nDirectionControlCount = 0;
         g_nDirectionControlPeriod = 0;
       }
