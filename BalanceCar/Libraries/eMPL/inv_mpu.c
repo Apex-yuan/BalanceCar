@@ -27,6 +27,8 @@
 #include "mpu6050.h"
 #include "systick.h"
 #include "usart1.h"
+#include "FreeRTOS.h"
+#include "task.h"
 
 void get_ms(unsigned long *time)
 {

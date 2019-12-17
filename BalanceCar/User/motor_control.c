@@ -140,7 +140,7 @@ void MotorOutput(void)
     //电机输出限幅
   g_fLeftMotorOut = constrain(g_fLeftMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
   g_fRightMotorOut = constrain(g_fRightMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
-#if 0 //1关闭电机输出，测试用
+#if 1 //1关闭电机输出，测试用
   motor_setPwm(LEFT_MOTOR, 0);
   motor_setPwm(RIGHT_MOTOR, 0);
 #else //正常输出
