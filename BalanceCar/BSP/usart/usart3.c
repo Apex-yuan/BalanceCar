@@ -63,8 +63,8 @@ void usart3_init(uint32_t bound)
   
   /* 配置嵌套向量中断控制器NVIC */ 
   NVIC_InitStructure.NVIC_IRQChannel = USART3_IRQn;  //配置USART1为中断源
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=9; //抢占优先级2
-	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;  //子优先级0
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=2; //抢占优先级2
+	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 1;  //子优先级0
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;  //IRQ通道使能
 	NVIC_Init(&NVIC_InitStructure);	 //根据指定的参数初始化NVIC寄存器
 	

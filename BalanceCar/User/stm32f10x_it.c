@@ -24,8 +24,6 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
 #include "protocol.h"
-#include "FreeRTOS.h"
-#include "task.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -108,9 +106,9 @@ void UsageFault_Handler(void)
   * @param  None
   * @retval None
   */
-//void SVC_Handler(void) //在FreeRTOS中实现
-//{
-//}
+void SVC_Handler(void)
+{
+}
 
 /**
   * @brief  This function handles Debug Monitor exception.
@@ -126,26 +124,18 @@ void DebugMon_Handler(void)
   * @param  None
   * @retval None
   */
-//void PendSV_Handler(void) //在FreeRTOS中实现
-//{
-//}
+void PendSV_Handler(void)
+{
+}
 
 /**
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
   */
-extern void xPortSysTickHandler(void);
- void SysTick_Handler(void)
- {
-   #if (INCLUDE_xTaskGetSchedulerState == 1 )
-   if (xTaskGetSchedulerState() != taskSCHEDULER_NOT_STARTED) {
-   #endif /* INCLUDE_xTaskGetSchedulerState */
-   xPortSysTickHandler();
-   #if (INCLUDE_xTaskGetSchedulerState == 1 )
-   }
-   #endif /* INCLUDE_xTaskGetSchedulerState */
- }
+// void SysTick_Handler(void)
+// {
+// }
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */

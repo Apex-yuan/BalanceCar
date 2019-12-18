@@ -10,7 +10,7 @@
       <TargetName>BalanceCar</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>5060750::V5.06 update 6 (build 750)::ARMCC</pCCUsed>
+      <pCCUsed>5060183::V5.06 update 2 (build 183)::ARMCC</pCCUsed>
       <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -312,7 +312,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>3</Optim>
+            <Optim>1</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -338,7 +338,7 @@
               <MiscControls></MiscControls>
               <Define>USE_STDPERIPH_DRIVER,STM32F10X_MD</Define>
               <Undefine></Undefine>
-              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\delay;..\BSP\tim;..\BSP\encoder;..\BSP\i2c;..\BSP\motor;..\BSP\mpu6050;..\Libraries\eMPL;..\BSP\systick;..\BSP;..\BSP\led;..\Libraries\FreeRTOS\include;..\Libraries\FreeRTOS\portable\RVDS\ARM_CM3</IncludePath>
+              <IncludePath>..\Libraries\CMSIS;..\Libraries\STM32F10x_StdPeriph_Driver\inc;..\User;..\BSP\usart;..\BSP\delay;..\BSP\tim;..\BSP\encoder;..\BSP\i2c;..\BSP\motor;..\BSP\mpu6050;..\Libraries\eMPL;..\BSP\systick;..\BSP;..\BSP\led</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -595,56 +595,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>FreeRTOS/Src</GroupName>
-          <Files>
-            <File>
-              <FileName>croutine.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\croutine.c</FilePath>
-            </File>
-            <File>
-              <FileName>event_groups.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\event_groups.c</FilePath>
-            </File>
-            <File>
-              <FileName>list.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\list.c</FilePath>
-            </File>
-            <File>
-              <FileName>queue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\queue.c</FilePath>
-            </File>
-            <File>
-              <FileName>tasks.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\tasks.c</FilePath>
-            </File>
-            <File>
-              <FileName>timers.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\timers.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>FreeRTOS/Portable</GroupName>
-          <Files>
-            <File>
-              <FileName>heap_4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
-            </File>
-            <File>
-              <FileName>port.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\portable\RVDS\ARM_CM3\port.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>USER</GroupName>
           <Files>
             <File>
@@ -686,11 +636,6 @@
               <FileName>virtual_oscilloscope.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\virtual_oscilloscope.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOSConfig.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\User\FreeRTOSConfig.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -1288,56 +1233,6 @@
           </Files>
         </Group>
         <Group>
-          <GroupName>FreeRTOS/Src</GroupName>
-          <Files>
-            <File>
-              <FileName>croutine.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\croutine.c</FilePath>
-            </File>
-            <File>
-              <FileName>event_groups.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\event_groups.c</FilePath>
-            </File>
-            <File>
-              <FileName>list.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\list.c</FilePath>
-            </File>
-            <File>
-              <FileName>queue.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\queue.c</FilePath>
-            </File>
-            <File>
-              <FileName>tasks.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\tasks.c</FilePath>
-            </File>
-            <File>
-              <FileName>timers.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\timers.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
-          <GroupName>FreeRTOS/Portable</GroupName>
-          <Files>
-            <File>
-              <FileName>heap_4.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\portable\MemMang\heap_4.c</FilePath>
-            </File>
-            <File>
-              <FileName>port.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\Libraries\FreeRTOS\portable\RVDS\ARM_CM3\port.c</FilePath>
-            </File>
-          </Files>
-        </Group>
-        <Group>
           <GroupName>USER</GroupName>
           <Files>
             <File>
@@ -1379,11 +1274,6 @@
               <FileName>virtual_oscilloscope.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\virtual_oscilloscope.c</FilePath>
-            </File>
-            <File>
-              <FileName>FreeRTOSConfig.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\User\FreeRTOSConfig.h</FilePath>
             </File>
           </Files>
         </Group>
