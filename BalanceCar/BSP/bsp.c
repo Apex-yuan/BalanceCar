@@ -28,8 +28,8 @@
   */
 void bsp_init(void)
 {
-  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_2); //设置中断优先级分组
-  systick_init();
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4); //设置中断优先级分组
+  //systick_init();
   led_init();
   usart1_init(115200);
   usart3_init(9600);
