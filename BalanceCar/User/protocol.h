@@ -28,9 +28,19 @@
 #define BYTE2(dwTemp) (*((char *)(&dwTemp) + 2))
 #define BYTE3(dwTemp) (*((char *)(&dwTemp) + 3))
 
+#define BUFFER_SIZE 4
+#define MAX_PACK_SIZE 80
+
 /* Exported variables ------------------------------------------------------- */
 extern float g_fBTSpeedSet;
 extern float g_fBTDirectionSet;
+
+extern bool g_bStartBitFlag; //接收到起始字符的标志位
+extern char cmdBuffer[BUFFER_SIZE][MAX_PACK_SIZE];
+extern int bufindr;
+extern int bufindw;
+extern int buflen;
+extern int serial_count;
 
 /* Exported functions ------------------------------------------------------- */
 void usart3_irq(void);

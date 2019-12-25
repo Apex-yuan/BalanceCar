@@ -89,7 +89,8 @@ void SpeedControlOutput(void)
   float fDelta;
   
   fDelta = g_fSpeedControlOutNew - g_fSpeedControlOutOld;
-  g_fSpeedControlOut = fDelta * (g_nSpeedControlPeriod + 1) / SPEED_CONTROL_PERIOD + g_fSpeedControlOutOld;
+//  g_fSpeedControlOut = fDelta * (g_nSpeedControlPeriod + 1) / SPEED_CONTROL_PERIOD + g_fSpeedControlOutOld;
+  g_fSpeedControlOut = fDelta * (g_nSpeedControlPeriod + 5) / SPEED_CONTROL_PERIOD + g_fSpeedControlOutOld;
   
   //ÐéÄâÊ¾²¨Æ÷
   g_fware[3] = g_fSpeedControlOut;

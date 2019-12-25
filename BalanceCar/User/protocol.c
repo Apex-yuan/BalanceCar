@@ -17,17 +17,21 @@
 #include "speed_control.h"
 #include "direction_control.h"
 #include <string.h>
+/* FreeRTOS */
+#include "FreeRTOS.h"
+#include "queue.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+extern QueueHandle_t usart3RxQueue;
 /* Private macro -------------------------------------------------------------*/
-#define BUFFER_SIZE 4
-#define MAX_PACK_SIZE 80
+//#define BUFFER_SIZE 4
+//#define MAX_PACK_SIZE 80
 /* Private variables ---------------------------------------------------------*/
 bool g_bStartBitFlag = 0; //接收到起始字符的标志位
-static char cmdBuffer[BUFFER_SIZE][MAX_PACK_SIZE];
-static int bufindr = 0;
-static int bufindw = 0;
-static int buflen  = 0;
+char cmdBuffer[BUFFER_SIZE][MAX_PACK_SIZE];
+int bufindr = 0;
+int bufindw = 0;
+int buflen  = 0;
 int serial_count = 0;
 
 /*蓝牙控制相关变量定义*/
@@ -87,30 +91,35 @@ void protocol_process(void)
 void usart3_irq(void)
 {
 	uint8_t rec;
+  BaseType_t xHigherPriorityTaskWoken;
   
 	if(USART_GetITStatus(USART3, USART_IT_RXNE) != RESET)  //接收中断
 	{
 		rec = USART_ReceiveData(USART3);//(USART1->DR);	//读取接收到的数据
-    if(rec == '$')
-    {
-      g_bStartBitFlag = 1;
-      serial_count = 0;
-    }
-    if(g_bStartBitFlag == 1)
-    {
-      cmdBuffer[bufindw][serial_count++] = rec;
-    }
-    if(g_bStartBitFlag == 1 && rec == '#')
-    {
-      g_bStartBitFlag = 0;
-      bufindw = (bufindw + 1) % BUFFER_SIZE;
-      buflen += 1;
-    }
-    if(serial_count >= 80)
-    {
-      g_bStartBitFlag = 0;
-      serial_count = 0;
-    }
+    
+    	xQueueSendToBackFromISR( usart3RxQueue, &rec, &xHigherPriorityTaskWoken );
+    
+    
+//    if(rec == '$')
+//    {
+//      g_bStartBitFlag = 1;
+//      serial_count = 0;
+//    }
+//    if(g_bStartBitFlag == 1)
+//    {
+//      cmdBuffer[bufindw][serial_count++] = rec;
+//    }
+//    if(g_bStartBitFlag == 1 && rec == '#')
+//    {
+//      g_bStartBitFlag = 0;
+//      bufindw = (bufindw + 1) % BUFFER_SIZE;
+//      buflen += 1;
+//    }
+//    if(serial_count >= 80)
+//    {
+//      g_bStartBitFlag = 0;
+//      serial_count = 0;
+//    }
   } 
 } 
 

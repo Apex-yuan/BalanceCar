@@ -73,7 +73,9 @@ void DirectionControlOutput(void)
   float fValue;
   
   fValue = g_fDirectionControlNew - g_fDirectionControlOld;
-  g_fDirectionControlOut = fValue * (g_nDirectionControlPeriod + 1) / 
+////  g_fDirectionControlOut = fValue * (g_nDirectionControlPeriod + 1) / 
+////                           DIRECTION_CONTROL_PERIOD + g_fDirectionControlOld; 
+  g_fDirectionControlOut = fValue * (g_nDirectionControlPeriod + 5) / 
                            DIRECTION_CONTROL_PERIOD + g_fDirectionControlOld; 
 }
 
