@@ -19,6 +19,7 @@
 #include <string.h>
 /* FreeRTOS */
 #include "FreeRTOS.h"
+#include "task.h"
 #include "queue.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -42,6 +43,45 @@ float g_fBTDirectionSet = 0.0;
 
 /* Private functions ---------------------------------------------------------*/
  
+/* usart3RxTask */
+void usart3RxTask(void *parameter)
+{
+  BaseType_t xReturn;
+  uint8_t rec;
+  usart3_printf("usart3RxTask Start\n");
+  usart3RxQueue = xQueueCreate((UBaseType_t) 128,
+							                 (UBaseType_t) sizeof(uint8_t));
+  for(;;)
+  {
+    xReturn = xQueueReceive(usart3RxQueue, &rec, portMAX_DELAY);
+    // usart3_printf("%c\n",rec);
+    if(xReturn != pdFALSE) //消息队列中有数据
+    {
+      /* 消息正确，则将消息存入ringbuffer */
+      if(rec == '$')
+      {
+        g_bStartBitFlag = 1;
+        serial_count = 0;
+      }
+      if(g_bStartBitFlag == 1)
+      {
+        cmdBuffer[bufindw][serial_count++] = rec;
+      }
+      if(g_bStartBitFlag == 1 && rec == '#')
+      {
+        g_bStartBitFlag = 0;
+        bufindw = (bufindw + 1) % BUFFER_SIZE;
+        buflen += 1;
+      }
+      if(serial_count >= 80)
+      {
+        g_bStartBitFlag = 0;
+        serial_count = 0;
+      }
+    }
+  }
+}
+
 /**
   * @brief  协议解包处理
   * @param  none
@@ -97,29 +137,8 @@ void usart3_irq(void)
 	{
 		rec = USART_ReceiveData(USART3);//(USART1->DR);	//读取接收到的数据
     
-    	xQueueSendToBackFromISR( usart3RxQueue, &rec, &xHigherPriorityTaskWoken );
+    xQueueSendToBackFromISR( usart3RxQueue, &rec, &xHigherPriorityTaskWoken ); //将接收到数据发送到消息队列
     
-    
-//    if(rec == '$')
-//    {
-//      g_bStartBitFlag = 1;
-//      serial_count = 0;
-//    }
-//    if(g_bStartBitFlag == 1)
-//    {
-//      cmdBuffer[bufindw][serial_count++] = rec;
-//    }
-//    if(g_bStartBitFlag == 1 && rec == '#')
-//    {
-//      g_bStartBitFlag = 0;
-//      bufindw = (bufindw + 1) % BUFFER_SIZE;
-//      buflen += 1;
-//    }
-//    if(serial_count >= 80)
-//    {
-//      g_bStartBitFlag = 0;
-//      serial_count = 0;
-//    }
   } 
 } 
 

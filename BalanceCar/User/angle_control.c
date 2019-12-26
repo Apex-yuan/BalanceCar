@@ -24,8 +24,8 @@ float g_fAngleControlOut;
 // short g_nGyro[3], g_nAccel[3];
 // float g_fPitch, g_fRoll, g_fYaw;
 
-float ANGLE_CONTROL_P = 45;//36;//67.5;
-float ANGLE_CONTROL_D = 2.0;//1.8;//3.0;
+float ANGLE_CONTROL_P = 36;//45;//36;//67.5;
+float ANGLE_CONTROL_D = 1.8;//2.0;//1.8;//3.0;
 
 /*车模跌倒标志位*/
 bool g_bFallFlag = 0;
@@ -50,7 +50,7 @@ void AngleControl(void)
            (g_fGyroscopeAngleSpeed - CAR_ANGLE_SPEED_SET) * ANGLE_CONTROL_D;
 	g_fAngleControlOut = fValue;
   
-//  //跌倒检测
+  /* 跌倒检测，用于弹射起步前的状态标记 */
   if(g_fCarAngle > 50 || g_fCarAngle < (-50))
   {
     g_bFallFlag = 1;

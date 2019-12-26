@@ -96,28 +96,13 @@ void MotorOutput(void)
 
   
   
-  //跌倒关闭电机输出
+  /* 跌倒后续的控制代码 */
   if(g_bFallFlag == 1) //当前车模处于跌倒状态
 	{
 		g_fLeftMotorOut = 0;
-      g_fRightMotorOut = 0;
+    g_fRightMotorOut = 0;
 
-
-    #if 0 //ENABLE_CATAPULT_START
-    //跌倒两秒后自动弹起
-    g_nCatapultStartCount++; //每个电机控制周期自加
-    // static uint32_t current_time = millis();
-    if(g_nCatapultStartCount >= 2000/5 && g_nCatapultStartCount < 2200/5)
-    {
-      motor_setPwm(LEFT_MOTOR, 500);
-      motor_setPwm(RIGHT_MOTOR, 500);
-    }
-    if(g_nCatapultStartCount >= 2200/5)
-    {
-      g_bFallFlag = 0; //清除跌倒标志位
-      g_nCatapultStartCount = 0;    
-    }
-    #elif 1
+    #if 1 //ENABLE_CATAPULT_START
     g_nCatapultStartCount++; //每个电机控制周期自加
     if(g_nCatapultStartCount >= 500/5 )//&& g_nCatapultStartCount < 2150/5)
     {
@@ -137,9 +122,10 @@ void MotorOutput(void)
     #endif
   }
     
-    //电机输出限幅
+  /* 电机输出限幅 */
   g_fLeftMotorOut = constrain(g_fLeftMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
   g_fRightMotorOut = constrain(g_fRightMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
+
 #if 0 //1关闭电机输出，测试用
   motor_setPwm(LEFT_MOTOR, 0);
   motor_setPwm(RIGHT_MOTOR, 0);

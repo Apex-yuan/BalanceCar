@@ -39,6 +39,7 @@ extern float g_fSpeedControlIntegral;
 extern float g_fSpeedControlOut;
 extern uint16_t g_nSpeedControlPeriod;
 /* Exported functions ------------------------------------------------------- */
+void speedControlTask(void *parameter);
 void GetMotorPulse(void);
 void SpeedControl(void);
 void SpeedControlOutput(void);

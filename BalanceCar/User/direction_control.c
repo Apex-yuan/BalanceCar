@@ -14,6 +14,9 @@
 #include "direction_control.h"
 #include "mpu6050.h"
 #include "protocol.h"
+/* FreeRTOS */
+#include "FreeRTOS.h"
+#include "task.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -32,6 +35,24 @@ float DIRECTION_I = 0.5;
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
+
+//IMU_Data imuData;
+/* 方向控制输出任务，周期：10ms */
+void directionControlTask(void *parameter)
+{
+  static portTickType xLastWakeTime;
+  const portTickType xFrequency = 10;
+  
+  xLastWakeTime = xTaskGetTickCount(); //获取系统当前时间
+  
+  while(1)
+  {
+    vTaskDelayUntil(&xLastWakeTime, xFrequency); //等待下一个周期
+    /* 以下为周期性执行的代码 */
+    DirectionControl();
+//    xQueuePeek(imuDataQueue, &imuData, 0);
+  }
+}
 
 /**
   * @brief  Main program

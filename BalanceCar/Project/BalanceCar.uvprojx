@@ -692,6 +692,11 @@
               <FileType>5</FileType>
               <FilePath>..\User\FreeRTOSConfig.h</FilePath>
             </File>
+            <File>
+              <FileName>config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User\config.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1384,6 +1389,11 @@
               <FileName>FreeRTOSConfig.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\User\FreeRTOSConfig.h</FilePath>
+            </File>
+            <File>
+              <FileName>config.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\User\config.h</FilePath>
             </File>
           </Files>
         </Group>

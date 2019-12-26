@@ -43,6 +43,7 @@ extern int buflen;
 extern int serial_count;
 
 /* Exported functions ------------------------------------------------------- */
+void usart3RxTask(void *parameter);
 void usart3_irq(void);
 void protocol_process(void);
 

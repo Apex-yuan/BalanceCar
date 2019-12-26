@@ -15,6 +15,10 @@
 #include "encoder.h"
 #include "virtual_oscilloscope.h"
 #include "protocol.h"
+/* FreeRTOS */
+#include "FreeRTOS.h"
+#include "task.h"
+
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -35,6 +39,22 @@ float SPEED_CONTROL_I = 1.2;//2.0;
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
+
+/* 速度控制输出任务，周期：100ms */
+void speedControlTask(void *parameter)
+{ 
+  static portTickType xLastWakeTime;
+  const portTickType xFrequency = 100;
+  
+  xLastWakeTime = xTaskGetTickCount(); //获取当前的系统时间
+  
+  while(1)
+  {
+    vTaskDelayUntil(&xLastWakeTime, xFrequency); //等待下一个周期
+    /* 以下为周期性执行的代码 */
+    SpeedControl();
+  }
+}
 
 /**
   * @brief  获取电机的脉冲数，中断中执行：每5ms执行一次累加20次
