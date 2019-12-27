@@ -25,7 +25,7 @@ float g_fAngleControlOut;
 // float g_fPitch, g_fRoll, g_fYaw;
 
 float ANGLE_CONTROL_P = 45;//36;//67.5;
-float ANGLE_CONTROL_D = 2.0;//1.8;//3.0;
+float ANGLE_CONTROL_D = 1.6;//1.8;//3.0;
 
 /*车模跌倒标志位*/
 bool g_bFallFlag = 0;
