@@ -30,8 +30,7 @@
 #define MAX_MOTOR_OUT        1000
 #define MIN_MOTOR_OUT       -1000
    
-//ºêº¯Êý
-#define constrain(amt,low,high) ((amt)<=(low)?(low):((amt)>=(high)?(high):(amt)))
+
 
 /* Exported variables ------------------------------------------------------- */
 extern float g_fLeftMotorOut;

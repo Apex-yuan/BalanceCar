@@ -122,7 +122,7 @@ void encoder_init(void)
   * @param  None
   * @retval None
   */
-int16_t encoder_getCurrentPulse(EncoderChoice_t choice)
+int16_t encoder_getPulse(EncoderChoice_t choice)
 {
   switch(choice)
   {
@@ -133,6 +133,17 @@ int16_t encoder_getCurrentPulse(EncoderChoice_t choice)
     default:
       return 0;
   }
+}
+
+/**
+  * @brief  ±àÂëÆ÷¸´Î»
+  * @param  None
+  * @retval None
+  */
+void encoder_resetPulse(void)
+{
+  TIM_SetCounter(TIM3, 0);
+  TIM_SetCounter(TIM4, 0);
 }
 
 

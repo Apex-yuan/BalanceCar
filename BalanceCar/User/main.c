@@ -18,6 +18,7 @@
 #include "motor_control.h"
 #include "protocol.h"
 #include "virtual_oscilloscope.h"
+#include "pid.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -28,6 +29,12 @@
 float g_n1MsEventCount = 0;
 float g_nSpeedControlCount = 0;
 uint32_t tTime[5];
+
+float targetSpeed = 0;          // used to control the robot, drive and turn, unit: wheel revulutions per second
+float turningSpeed = 0; 
+float actualTargetSpeed = 0; 
+float actualTurningSpeed = 0; 
+float motorSpeed = 0; //
 
 /* 系统在刚初始化完成时，数据输出不是很稳定，因而需要一定的延时时间，等待数据稳定再让电机输出。
    这里主要是为了服务于初始状态下的弹射起步，若没有等待到数据稳定，弹射起步便无法正常触发。
@@ -86,15 +93,15 @@ void TIM1_UP_IRQHandler(void)
     g_n1MsEventCount ++;
     g_ndelayDeparturecount++; //用于延迟发车计数
     
-    g_nSpeedControlPeriod ++;
-    SpeedControlOutput();
-    g_nDirectionControlPeriod ++;
-    DirectionControlOutput();
+//    g_nSpeedControlPeriod ++;
+//    SpeedControlOutput();
+//    g_nDirectionControlPeriod ++;
+//    DirectionControlOutput();
     
     if(g_n1MsEventCount >= CONTROL_PERIOD)
     {
       g_n1MsEventCount = 0;
-      GetMotorPulse();
+      //GetMotorPulse();
     }
     else if(g_n1MsEventCount == 1)
     {
@@ -102,6 +109,7 @@ void TIM1_UP_IRQHandler(void)
     }
     else if(g_n1MsEventCount == 2)
     {
+      SpeedControl();
       AngleControl();
       if(g_ndelayDeparturecount >= g_ndelayDeparturetime) //到达发车时间
       {
@@ -109,26 +117,26 @@ void TIM1_UP_IRQHandler(void)
         g_ndelayDeparturecount = g_ndelayDeparturetime + 1; //防止计数溢出
       }
     }
-    else if (g_n1MsEventCount == 3)
-    {
-      g_nSpeedControlCount ++;
-      if(g_nSpeedControlCount >= SPEED_CONTROL_COUNT)
-      {
-        SpeedControl();
-        g_nSpeedControlCount = 0;
-        g_nSpeedControlPeriod = 0;
-      }
-    }
-    else if(g_n1MsEventCount == 4)
-    {
-      g_nDirectionControlCount ++;
-      if(g_nDirectionControlCount >= DIRECTION_CONTROL_COUNT)
-      {
-        DirectionControl();
-        g_nDirectionControlCount = 0;
-        g_nDirectionControlPeriod = 0;
-      }
-    }
+//    else if (g_n1MsEventCount == 3)
+//    {
+//      g_nSpeedControlCount ++;
+//      if(g_nSpeedControlCount >= SPEED_CONTROL_COUNT)
+//      {
+//        //SpeedControl();
+//        g_nSpeedControlCount = 0;
+//        g_nSpeedControlPeriod = 0;
+//      }
+//    }
+//    else if(g_n1MsEventCount == 4)
+//    {
+//      g_nDirectionControlCount ++;
+//      if(g_nDirectionControlCount >= DIRECTION_CONTROL_COUNT)
+//      {
+//        DirectionControl();
+//        g_nDirectionControlCount = 0;
+//        g_nDirectionControlPeriod = 0;
+//      }
+//    }
     
   }
 }

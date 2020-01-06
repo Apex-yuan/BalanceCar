@@ -19,6 +19,7 @@
 #include <math.h>
 #include "virtual_oscilloscope.h"
 #include "systick.h"
+#include "config.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -43,10 +44,10 @@ void MotorOutput(void)
   #if 0  //关闭电机输出
     g_fLeftMotorOut = 0;
     g_fRightMotorOut = 0;
-  #elif 0  //直立控制调试 
+  #elif 1  //直立控制调试 
     g_fLeftMotorOut = g_fAngleControlOut;
     g_fRightMotorOut = g_fAngleControlOut;
-  #elif 1 //直立+速度控制调试
+  #elif 0 //直立+速度控制调试
     g_fLeftMotorOut = g_fAngleControlOut - g_fSpeedControlOut;
     g_fRightMotorOut = g_fAngleControlOut - g_fSpeedControlOut;
   #elif 0 
@@ -100,7 +101,8 @@ void MotorOutput(void)
   if(g_bFallFlag == 1) //当前车模处于跌倒状态
 	{
 		g_fLeftMotorOut = 0;
-      g_fRightMotorOut = 0;
+    g_fRightMotorOut = 0;
+    g_fSpeedControlIntegral = 0; //
 
 
     #if 0 //ENABLE_CATAPULT_START
@@ -117,7 +119,7 @@ void MotorOutput(void)
       g_bFallFlag = 0; //清除跌倒标志位
       g_nCatapultStartCount = 0;    
     }
-    #elif 1
+    #elif 0
     g_nCatapultStartCount++; //每个电机控制周期自加
     if(g_nCatapultStartCount >= 500/5 )//&& g_nCatapultStartCount < 2150/5)
     {
@@ -141,6 +143,8 @@ void MotorOutput(void)
   g_fLeftMotorOut = constrain(g_fLeftMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
   g_fRightMotorOut = constrain(g_fRightMotorOut, MIN_MOTOR_OUT, MAX_MOTOR_OUT);
 #if 0 //1关闭电机输出，测试用
+//  motor_setDirection(LEFT_MOTOR, FRONT);
+//  motor_setDirection(RIGHT_MOTOR, FRONT);
   motor_setPwm(LEFT_MOTOR, 0);
   motor_setPwm(RIGHT_MOTOR, 0);
 #else //正常输出

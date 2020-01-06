@@ -1,64 +1,63 @@
 /**
   ******************************************************************************
-  * @file    angle_control.c 
+  * @file    pid.c 
   * @author  Apexyuan
   * @version V1.0.0
-  * @date    2019-12-09
-  * @brief   平衡车直立控制相关的代码
+  * @date    2019-12-27
+  * @brief   基础pid实现
   ******************************************************************************
   * @attention
   ******************************************************************************
   */
 
 /* Includes ------------------------------------------------------------------*/ 
-#include "angle_control.h"
-#include "speed_control.h"
-#include "virtual_oscilloscope.h"
+#include "pid.h"
 #include "config.h"
-
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-float g_fCarAngle;
-float g_fGyroscopeAngleSpeed;
-float g_fAngleControlOut;
 
-/*车模跌倒标志位*/
-bool g_bFallFlag = 0;
 /* Private function prototypes -----------------------------------------------*/
 
 /* Private functions ---------------------------------------------------------*/
 
 /**
-  * @brief  直立控制算法（置于中断中运行每5ms执行一次）
+  * @brief  Main program
   * @param  None
   * @retval None
   */
-void AngleControl(void)
+void pid_set(PID_t *pid, float p, float i, float d, float iLimit)
 {
-  float fValue;
-
-  /* 获取倾角：度  角速度：度/秒 */
-	g_fCarAngle = RAD2DEG(imu_data.rpy[0]); //g_fRoll;
-  g_fGyroscopeAngleSpeed = RAD2DEG(imu_data.gyro[0]); //(float)g_nGyro[0];
-  
-  //g_fSpeedControlOut = 0;
-	fValue = (g_fCarAngle - g_fSpeedControlOut) * ANGLE_P + 
-           g_fGyroscopeAngleSpeed * ANGLE_D;
-	g_fAngleControlOut = fValue;
-  
-  //跌倒检测
-  if(g_fCarAngle > 50 || g_fCarAngle < (-50))
-  {
-    g_bFallFlag = 1;
-  }
-
-  //虚拟示波器
-  g_fware[0] = g_fCarAngle;
-  g_fware[1] = g_fGyroscopeAngleSpeed;
-  g_fware[2] = g_fAngleControlOut;
+  pid->_kp = p;
+  pid->_ki = i;
+  pid->_kd = d;
+  pid->_iLimit = iLimit;
+  pid->_integratedError = 0;
+  pid->_lastError = 0;
 }
+
+float pid_update(PID_t *pid,float target, float current, float deltaTime)
+{
+  float error = (target - current) * deltaTime;
+  float pPart = pid->_kp * error;
+  
+  pid->_integratedError += error;
+  pid->_integratedError = constrain(pid->_integratedError, -(pid->_iLimit), pid->_iLimit);
+  float iPart = pid->_ki * pid->_integratedError;
+  
+  float dPart = pid->_kd * (error - pid->_lastError);
+  pid->_lastError = error;
+  return (pPart + iPart + dPart);
+}
+
+void pid_reset(PID_t *pid)
+{
+  pid->_integratedError = 0;
+  pid->_lastError = 0;
+}
+
+
 
 
 

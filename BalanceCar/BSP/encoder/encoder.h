@@ -59,7 +59,8 @@ typedef enum
 
 /* Exported functions ------------------------------------------------------- */
 void encoder_init(void);
-int16_t encoder_getCurrentPulse(EncoderChoice_t choice);
+int16_t encoder_getPulse(EncoderChoice_t choice);
+void encoder_resetPulse(void);
 
 #endif /* __ENCODER_H */
 
