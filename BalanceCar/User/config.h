@@ -33,13 +33,13 @@
 #define SPEED_ACCELERATION 0.05
 
 /*速度控制PID*/
-#define SPEED_P 2//1.05 //35; //240;//400;
-#define SPEED_I 0.175  //1.2;//2.0;
-#define SPEED_I_LIMIT 800
+#define SPEED_P 2.0//1.05 //35; //240;//400;
+#define SPEED_I 0.13  //1.2;//2.0;
+#define SPEED_I_LIMIT 25
 
 /* 角度控制PID */
-#define ANGLE_P -55 //45;//67.5;
-#define ANGLE_D -1.65 //1.6;//3.0;
+#define ANGLE_P -44//-55 //45;//67.5;
+#define ANGLE_D -1.32//-1.65 //1.6;//3.0;
    
 #ifdef __cplusplus
 }

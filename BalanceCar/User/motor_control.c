@@ -44,7 +44,7 @@ void MotorOutput(void)
   #if 0  //关闭电机输出
     g_fLeftMotorOut = 0;
     g_fRightMotorOut = 0;
-  #elif 1  //直立控制调试 
+  #elif 1  //串级PID控制输出 
     g_fLeftMotorOut = g_fAngleControlOut;
     g_fRightMotorOut = g_fAngleControlOut;
   #elif 0 //直立+速度控制调试

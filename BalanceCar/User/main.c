@@ -93,11 +93,6 @@ void TIM1_UP_IRQHandler(void)
     g_n1MsEventCount ++;
     g_ndelayDeparturecount++; //用于延迟发车计数
     
-//    g_nSpeedControlPeriod ++;
-//    SpeedControlOutput();
-//    g_nDirectionControlPeriod ++;
-//    DirectionControlOutput();
-    
     if(g_n1MsEventCount >= CONTROL_PERIOD)
     {
       g_n1MsEventCount = 0;
@@ -117,26 +112,7 @@ void TIM1_UP_IRQHandler(void)
         g_ndelayDeparturecount = g_ndelayDeparturetime + 1; //防止计数溢出
       }
     }
-//    else if (g_n1MsEventCount == 3)
-//    {
-//      g_nSpeedControlCount ++;
-//      if(g_nSpeedControlCount >= SPEED_CONTROL_COUNT)
-//      {
-//        //SpeedControl();
-//        g_nSpeedControlCount = 0;
-//        g_nSpeedControlPeriod = 0;
-//      }
-//    }
-//    else if(g_n1MsEventCount == 4)
-//    {
-//      g_nDirectionControlCount ++;
-//      if(g_nDirectionControlCount >= DIRECTION_CONTROL_COUNT)
-//      {
-//        DirectionControl();
-//        g_nDirectionControlCount = 0;
-//        g_nDirectionControlPeriod = 0;
-//      }
-//    }
+
     
   }
 }
