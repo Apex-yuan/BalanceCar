@@ -21,6 +21,9 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+float speedP = 0;
+float speedI = 0;
+float speedD = 0;
 float g_fCarSpeed;
 float g_fActualTargetSpeed = 0.0;
 float g_fTargetSpeed = 0;
@@ -67,8 +70,8 @@ void SpeedControl(void)
    
   fDelta = g_fActualTargetSpeed - g_fCarSpeed;
   
-  fP = fDelta * SPEED_P;
-  fI = fDelta * SPEED_I;
+  fP = fDelta * speedP;
+  fI = fDelta * speedI;
   
   g_fSpeedControlIntegral += fI;
   

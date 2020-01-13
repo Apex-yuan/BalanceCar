@@ -23,7 +23,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
-#include "protocol.h"
+#include "serial.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{

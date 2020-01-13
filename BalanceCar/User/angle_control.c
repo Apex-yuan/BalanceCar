@@ -20,6 +20,9 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+float angleP = 0;
+float angleI = 0;
+float angleD = 0;
 float g_fCarAngle;
 float g_fGyroscopeAngleSpeed;
 float g_fAngleControlOut;
@@ -44,8 +47,8 @@ void AngleControl(void)
   g_fGyroscopeAngleSpeed = RAD2DEG(imu_data.gyro[0]); //(float)g_nGyro[0];
   
   //g_fSpeedControlOut = 0;
-	fValue = (g_fCarAngle - g_fSpeedControlOut) * ANGLE_P + 
-           g_fGyroscopeAngleSpeed * ANGLE_D;
+	fValue = (g_fCarAngle - g_fSpeedControlOut) * angleP + 
+           g_fGyroscopeAngleSpeed * angleD;
 	g_fAngleControlOut = fValue;
   
   //µøµ¹¼ì²â

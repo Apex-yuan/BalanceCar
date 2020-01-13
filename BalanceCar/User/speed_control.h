@@ -24,6 +24,9 @@
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
 /* Exported variables ------------------------------------------------------- */
+extern float speedP;
+extern float speedI;
+extern float speedD;
 extern float g_fCarSpeed;
 extern float g_fSpeedControlOut;
 extern float g_fSpeedControlIntegral;

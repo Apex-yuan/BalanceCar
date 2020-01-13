@@ -27,6 +27,8 @@
 #define BYTE1(dwTemp) (*((char *)(&dwTemp) + 1))
 #define BYTE2(dwTemp) (*((char *)(&dwTemp) + 2))
 #define BYTE3(dwTemp) (*((char *)(&dwTemp) + 3))
+  
+#define LOG_INFO usart3_printf
 
 /* Exported variables ------------------------------------------------------- */
 extern float g_fBTSpeedSet;

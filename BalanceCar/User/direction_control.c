@@ -18,6 +18,9 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+float turnP = 0;
+float turnI = 0;
+float turnD = 0;
 float g_fDirectionControlOut = 0;
 float g_fDirectionControlNew, g_fDirectionControlOld;
 uint8_t g_nDirectionControlPeriod;

@@ -35,11 +35,18 @@
 /*速度控制PID*/
 #define SPEED_P 2.0//1.05 //35; //240;//400;
 #define SPEED_I 0.13  //1.2;//2.0;
+#define SPEED_D 0
 #define SPEED_I_LIMIT 25
 
 /* 角度控制PID */
 #define ANGLE_P -44//-55 //45;//67.5;
+#define ANGLE_I 0
 #define ANGLE_D -1.32//-1.65 //1.6;//3.0;
+   
+/* 转向控制PID */
+#define TURN_P 0
+#define TURN_I 0
+#define TURN_D 0
    
 #ifdef __cplusplus
 }

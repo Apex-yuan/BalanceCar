@@ -1,48 +1,50 @@
 /**
   ******************************************************************************
-  * @file    angle_control.h 
+  * @file    serial.h 
   * @author  Apexyuan
   * @version V1.0.0
-  * @date    2019-12-09
-  * @brief   平衡车直立控制
+  * @date    2020-01-13
+  * @brief   串口数据处理
   ******************************************************************************
   * @attention
   ******************************************************************************
   */
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __ANGLE_CONTROL_H
-#define __ANGLE_CONTROL_H
+#ifndef __SERIAL_H
+#define __SERIAL_H
 
 #ifdef __cplusplus
  extern "C" {
 #endif 
 
 /* Includes ------------------------------------------------------------------*/
-#include "mpu6050.h"
-#include <stdbool.h>
-/* Exported types ------------------------------------------------------------*/
-/* Exported constants --------------------------------------------------------*/
+#include "stm32f10x.h"
 /* Exported macro ------------------------------------------------------------*/
-//#define CAR_ANGLE_SET   0
-//#define CAR_ANGLE_SPEED_SET  0
+#define RX_BUFFER_SIZE 64  //定义接收缓冲区的大小
+   
+/* Exported types ------------------------------------------------------------*/
+typedef struct ring_buffer
+{
+  unsigned char buffer[RX_BUFFER_SIZE];
+  int head;
+  int tail;
+}ring_buffer;
 
-/* Exported variables ------------------------------------------------------- */
-extern float angleP;
-extern float angleI;
-extern float angleD;
-extern float g_fCarAngle;
-extern float g_fGyroscopeAngleSpeed;
-extern float g_fAngleControlOut;
-extern bool g_bFallFlag;
+extern  ring_buffer rx_buffer;	
+/* Exported constants --------------------------------------------------------*/
+
 /* Exported functions ------------------------------------------------------- */
-void AngleControl(void);
-
+void usart3_irq(void);
+unsigned int serial_available(void);
+int serial_read(void);
+void serial_flush(void);
+void serial_checkRx(void);
 
 #ifdef __cplusplus
 }
 #endif
 
-#endif /* __ANGLE_CONTROL_H */
+#endif /* __SERIAL_H */
 
 

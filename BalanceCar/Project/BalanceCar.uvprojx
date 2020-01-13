@@ -647,6 +647,11 @@
               <FileType>5</FileType>
               <FilePath>..\User\config.h</FilePath>
             </File>
+            <File>
+              <FileName>serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\serial.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -1294,6 +1299,11 @@
               <FileName>config.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\User\config.h</FilePath>
+            </File>
+            <File>
+              <FileName>serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\serial.c</FilePath>
             </File>
           </Files>
         </Group>

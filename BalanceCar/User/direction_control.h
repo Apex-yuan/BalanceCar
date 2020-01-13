@@ -29,6 +29,9 @@
 // #define DIRECTION_CONTROL_COUNT (DIRECTION_CONTROL_PERIOD / CONTROL_PERIOD) //2*5=10ms
 
 /* Exported variables ------------------------------------------------------- */
+extern float turnP;
+extern float turnI;
+extern float turnD;
 extern float g_fDirectionControlOut;
 extern float g_fDirectionControlNew, g_fDirectionControlOld;
 extern uint8_t g_nDirectionControlPeriod;

@@ -12,6 +12,7 @@
 
 /* Includes ------------------------------------------------------------------*/ 
 #include "bsp.h"
+#include "config.h"
 #include "angle_control.h"
 #include "speed_control.h"
 #include "direction_control.h"
@@ -46,6 +47,28 @@ uint32_t g_ndelayDeparturetime = 2000;  //单位ms  这里的时间是指初始化完成后的延
 /* Private functions ---------------------------------------------------------*/
 
 /**
+  * @brief  parameter init
+  * @param  None
+  * @retval None
+  */
+void parameter_init(void)
+{
+  /*angle pid*/
+  angleP = ANGLE_P;
+  angleI = ANGLE_I;
+  angleD = ANGLE_D;
+  /* speed pid */
+  speedP = SPEED_P;
+  speedI = SPEED_I;
+  speedD = SPEED_D;
+  /* turn pid */
+  turnP = TURN_P;
+  turnI = TURN_I;
+  turnD = TURN_D;
+}
+
+
+/**
   * @brief  Main program
   * @param  None
   * @retval None
@@ -53,6 +76,7 @@ uint32_t g_ndelayDeparturetime = 2000;  //单位ms  这里的时间是指初始化完成后的延
 int main(void)
 {
   uint32_t tmp;
+  parameter_init();
   bsp_init(); //初始化板级支持包
   tmp = millis();
   for(uint8_t i = 0; i < 5; ++i)
@@ -71,7 +95,7 @@ int main(void)
     /* 在车模启动之后,以10hz的频率向虚拟示波器发送数据 */
     if(millis() - tTime[1] >= 1000/20)
     {
-      vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
+//      vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
       tTime[1] = millis();
     }
     /* 处理接收到的上位机数据 */
