@@ -115,16 +115,16 @@ void processCommand(void)
       }
       case 2: //设置角度PID
       {
-        if(code_seen('P')) angleP = code_value();
-        if(code_seen('I')) angleI = code_value();
-        if(code_seen('D')) angleD = code_value();
+        if(code_seen('P')) anglePID._kp = code_value();
+        if(code_seen('I')) anglePID._ki = code_value();
+        if(code_seen('D')) anglePID._kd = code_value();
         break;
       }
       case 3: //设置速度PID
       {
-        if(code_seen('P')) speedP = code_value();
-        if(code_seen('I')) speedI = code_value();
-        if(code_seen('D')) speedD = code_value();
+        if(code_seen('P')) speedPID._kp = code_value();
+        if(code_seen('I')) speedPID._ki = code_value();
+        if(code_seen('D')) speedPID._kd = code_value();
         break;
       }
       case 4: //设置转向PID

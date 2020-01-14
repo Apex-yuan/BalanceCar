@@ -20,6 +20,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <stdint.h>
+#include "pid.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
@@ -30,6 +31,7 @@ extern float speedD;
 extern float g_fCarSpeed;
 extern float g_fSpeedControlOut;
 extern float g_fSpeedControlIntegral;
+extern PID_t speedPID;
 /* Exported functions ------------------------------------------------------- */
 void SpeedControl(void);
 

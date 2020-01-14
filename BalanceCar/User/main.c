@@ -61,6 +61,7 @@ void parameter_init(void)
   angleI = ANGLE_I;
   angleD = ANGLE_D;
   /* speed pid */
+  pid_init(&speedPID,SPEED_P, SPEED_I, SPEED_D, SPEED_I_LIMIT, FROM_ERROR);
   speedP = SPEED_P;
   speedI = SPEED_I;
   speedD = SPEED_D;

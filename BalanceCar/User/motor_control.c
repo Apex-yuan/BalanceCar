@@ -103,7 +103,8 @@ void MotorOutput(void)
 		g_fLeftMotorOut = 0;
     g_fRightMotorOut = 0;
     g_fSpeedControlIntegral = 0; //
-
+    pid_reset(&anglePID);
+    pid_reset(&speedPID);
 
     #if 0 //ENABLE_CATAPULT_START
     //跌倒两秒后自动弹起

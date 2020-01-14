@@ -16,6 +16,7 @@
 #include "virtual_oscilloscope.h"
 #include "protocol.h"
 #include "config.h"
+#include "pid.h"
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -24,6 +25,7 @@
 float speedP = 0;
 float speedI = 0;
 float speedD = 0;
+PID_t speedPID;
 float g_fCarSpeed;
 float g_fActualTargetSpeed = 0.0;
 float g_fTargetSpeed = 0;
@@ -73,17 +75,18 @@ void SpeedControl(void)
   g_fCarSpeed = getCarSpeed(); //获取车模速度：转/秒
    
   fDelta = g_fActualTargetSpeed - g_fCarSpeed;
-  
-  fP = fDelta * speedP;
-  fI = fDelta * speedI;
-  
-  g_fSpeedControlIntegral += fI;
-  
-  /* 积分限幅 */
-//  g_fSpeedControlIntegral = constrain(g_fSpeedControlIntegral, -SPEED_I_LIMIT, SPEED_I_LIMIT);
-  
-  g_fSpeedControlOutOld = g_fSpeedControlOut;
-  g_fSpeedControlOut = fP + g_fSpeedControlIntegral;
+//  
+//  fP = fDelta * speedP;
+//  fI = fDelta * speedI;
+//  
+//  g_fSpeedControlIntegral += fI;
+//  
+//  /* 积分限幅 */
+////  g_fSpeedControlIntegral = constrain(g_fSpeedControlIntegral, -SPEED_I_LIMIT, SPEED_I_LIMIT);
+//  
+//  g_fSpeedControlOutOld = g_fSpeedControlOut;
+//  g_fSpeedControlOut = fP + g_fSpeedControlIntegral;
+  g_fSpeedControlOut = pid_update(&speedPID,g_fActualTargetSpeed,g_fCarSpeed,DT);
   
   /* 虚拟示波器 */
   g_fware[3] = g_fCarSpeed * 100;
