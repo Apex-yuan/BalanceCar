@@ -21,6 +21,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "mpu6050.h"
 #include <stdbool.h>
+#include "pid.h"
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
 /* Exported macro ------------------------------------------------------------*/
@@ -35,6 +36,7 @@ extern float g_fCarAngle;
 extern float g_fGyroscopeAngleSpeed;
 extern float g_fAngleControlOut;
 extern bool g_bFallFlag;
+extern PID_t anglePID;
 /* Exported functions ------------------------------------------------------- */
 void AngleControl(void);
 

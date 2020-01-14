@@ -18,6 +18,9 @@
  extern "C" {
 #endif 
 
+#define CONTROL_PERIOD 5 //5ms
+#define DT (float)(CONTROL_PERIOD/1000.0)
+   
 /* ºêº¯Êý */
 #define constrain(amt,low,high) ((amt)<=(low)?(low):((amt)>=(high)?(high):(amt)))
 #define DEG2RAD(x)   (x * 0.01745329252) // *PI/180
@@ -36,10 +39,10 @@
 #define SPEED_P 2.0//1.05 //35; //240;//400;
 #define SPEED_I 0.13  //1.2;//2.0;
 #define SPEED_D 0
-#define SPEED_I_LIMIT 25
+#define SPEED_I_LIMIT 30
 
 /* ½Ç¶È¿ØÖÆPID */
-#define ANGLE_P -44//-55 //45;//67.5;
+#define ANGLE_P 44//-44//-55 //45;//67.5;
 #define ANGLE_I 0
 #define ANGLE_D -1.32//-1.65 //1.6;//3.0;
    

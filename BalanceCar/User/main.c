@@ -23,9 +23,9 @@
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
-#define CONTROL_PERIOD 5 //5ms
-#define SPEED_CONTROL_COUNT 20 //20*5=100ms
-#define DIRECTION_CONTROL_COUNT 2 //2*5=10ms
+//#define CONTROL_PERIOD 5 //5ms
+//#define SPEED_CONTROL_COUNT 20 //20*5=100ms
+//#define DIRECTION_CONTROL_COUNT 2 //2*5=10ms
 /* Private variables ---------------------------------------------------------*/
 float g_n1MsEventCount = 0;
 float g_nSpeedControlCount = 0;
@@ -36,6 +36,7 @@ float turningSpeed = 0;
 float actualTargetSpeed = 0; 
 float actualTurningSpeed = 0; 
 float motorSpeed = 0; //
+//float ddt;
 
 /* 系统在刚初始化完成时，数据输出不是很稳定，因而需要一定的延时时间，等待数据稳定再让电机输出。
    这里主要是为了服务于初始状态下的弹射起步，若没有等待到数据稳定，弹射起步便无法正常触发。
@@ -54,6 +55,8 @@ uint32_t g_ndelayDeparturetime = 2000;  //单位ms  这里的时间是指初始化完成后的延
 void parameter_init(void)
 {
   /*angle pid*/
+  pid_init(&anglePID,ANGLE_P,ANGLE_I,ANGLE_D,0,FROM_MEASURED_VALUE);
+//  ddt = DT;
   angleP = ANGLE_P;
   angleI = ANGLE_I;
   angleD = ANGLE_D;
@@ -95,7 +98,7 @@ int main(void)
     /* 在车模启动之后,以10hz的频率向虚拟示波器发送数据 */
     if(millis() - tTime[1] >= 1000/20)
     {
-//      vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
+      vcan_sendware((uint8_t *)g_fware,sizeof(g_fware));
       tTime[1] = millis();
     }
     /* 处理接收到的上位机数据 */
@@ -124,10 +127,11 @@ void TIM1_UP_IRQHandler(void)
     }
     else if(g_n1MsEventCount == 1)
     {
-      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
+//      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
     }
     else if(g_n1MsEventCount == 2)
     {
+      MPU_DMP_ReadData(&imu_data); //数据一定要及时读出否则会卡死（即该函数在mpu初始化完成后一定要频繁执行）
       SpeedControl();
       AngleControl();
       if(g_ndelayDeparturecount >= g_ndelayDeparturetime) //到达发车时间

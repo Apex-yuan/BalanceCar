@@ -40,15 +40,19 @@ float g_fSpeedControlOut;
   * @param  None
   * @retval None
   */
+//  int32_t nLeftEncoderPulse, nRightEncoderPulse;
 static float getCarSpeed(void)
 {
   int32_t nLeftEncoderPulse, nRightEncoderPulse;
-  float fSpeed;
+  static float fSpeed;
+  float tmp;
   
   nLeftEncoderPulse = encoder_getPulse(LEFT_ENCODER);
   nRightEncoderPulse = encoder_getPulse(RIGHT_ENCODER);
   encoder_resetPulse();
-  fSpeed = (nLeftEncoderPulse + nRightEncoderPulse) / 2.0;
+  tmp = (nLeftEncoderPulse + nRightEncoderPulse) / 2.0;
+  fSpeed *= 0.8;
+  fSpeed += tmp*0.2;
   return (fSpeed * CAR_SPEED_CONSTANT); //速度单位转化为：转/秒
 }
 
@@ -76,7 +80,7 @@ void SpeedControl(void)
   g_fSpeedControlIntegral += fI;
   
   /* 积分限幅 */
-  g_fSpeedControlIntegral = constrain(g_fSpeedControlIntegral, -SPEED_I_LIMIT, SPEED_I_LIMIT);
+//  g_fSpeedControlIntegral = constrain(g_fSpeedControlIntegral, -SPEED_I_LIMIT, SPEED_I_LIMIT);
   
   g_fSpeedControlOutOld = g_fSpeedControlOut;
   g_fSpeedControlOut = fP + g_fSpeedControlIntegral;
