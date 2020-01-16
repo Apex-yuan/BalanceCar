@@ -608,29 +608,9 @@
               <FilePath>..\User\stm32f10x_it.c</FilePath>
             </File>
             <File>
-              <FileName>angle_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\angle_control.c</FilePath>
-            </File>
-            <File>
-              <FileName>speed_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\speed_control.c</FilePath>
-            </File>
-            <File>
-              <FileName>motor_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\motor_control.c</FilePath>
-            </File>
-            <File>
               <FileName>protocol.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\protocol.c</FilePath>
-            </File>
-            <File>
-              <FileName>direction_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\direction_control.c</FilePath>
             </File>
             <File>
               <FileName>virtual_oscilloscope.c</FileName>
@@ -651,6 +631,21 @@
               <FileName>serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>lowPassFilter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\lowPassFilter.c</FilePath>
+            </File>
+            <File>
+              <FileName>odometry.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\odometry.c</FilePath>
+            </File>
+            <File>
+              <FileName>motorControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\motorControl.c</FilePath>
             </File>
           </Files>
         </Group>
@@ -1261,29 +1256,9 @@
               <FilePath>..\User\stm32f10x_it.c</FilePath>
             </File>
             <File>
-              <FileName>angle_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\angle_control.c</FilePath>
-            </File>
-            <File>
-              <FileName>speed_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\speed_control.c</FilePath>
-            </File>
-            <File>
-              <FileName>motor_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\motor_control.c</FilePath>
-            </File>
-            <File>
               <FileName>protocol.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\protocol.c</FilePath>
-            </File>
-            <File>
-              <FileName>direction_control.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\User\direction_control.c</FilePath>
             </File>
             <File>
               <FileName>virtual_oscilloscope.c</FileName>
@@ -1304,6 +1279,21 @@
               <FileName>serial.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\User\serial.c</FilePath>
+            </File>
+            <File>
+              <FileName>lowPassFilter.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\lowPassFilter.c</FilePath>
+            </File>
+            <File>
+              <FileName>odometry.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\odometry.c</FilePath>
+            </File>
+            <File>
+              <FileName>motorControl.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\User\motorControl.c</FilePath>
             </File>
           </Files>
         </Group>

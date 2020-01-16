@@ -125,7 +125,7 @@ void motor_setDirection(MotorChoice_t choice, MotorDirection_t direction)
     {
       switch (direction)
       {
-        case BACK :
+        case FRONT :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN2_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN1_PIN);
@@ -136,7 +136,7 @@ void motor_setDirection(MotorChoice_t choice, MotorDirection_t direction)
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN1_PIN | L_MOTOR_IN2_PIN);
           break;
         }
-        case FRONT :
+        case BACK :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN1_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, L_MOTOR_IN2_PIN);
@@ -151,7 +151,7 @@ void motor_setDirection(MotorChoice_t choice, MotorDirection_t direction)
     {
       switch (direction)
       {
-        case BACK :
+        case FRONT :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN2_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN1_PIN);
@@ -162,7 +162,7 @@ void motor_setDirection(MotorChoice_t choice, MotorDirection_t direction)
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN1_PIN | R_MOTOR_IN2_PIN);
           break;
         }
-        case FRONT :
+        case BACK :
         {
           GPIO_ResetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN1_PIN);
           GPIO_SetBits(MOTOR_IN_GPIO_PORT, R_MOTOR_IN2_PIN);

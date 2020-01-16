@@ -25,7 +25,7 @@
 float angleP = 0;
 float angleI = 0;
 float angleD = 0;
-PID_t anglePID;
+
 float g_fCarAngle;
 float g_fCarAngleOld;
 float g_fGyroscopeAngleSpeed;
@@ -48,13 +48,8 @@ void AngleControl(void)
 
   /* 获取倾角：度  角速度：度/秒 */
 	g_fCarAngle = RAD2DEG(imu_data.rpy[0]); //g_fRoll;
-  g_fGyroscopeAngleSpeed = RAD2DEG(imu_data.gyro[0]); //(float)g_nGyro[0];
-  
-//	fValue = (g_fCarAngle - g_fSpeedControlOut) * angleP + 
-//           (g_fCarAngle-g_fCarAngleOld)*200 * angleD;
-//  g_fCarAngleOld = g_fCarAngle;
-//	g_fAngleControlOut = fValue;
-//  g_fSpeedControlOut = 0;
+//  g_fGyroscopeAngleSpeed = RAD2DEG(imu_data.gyro[0]); //(float)g_nGyro[0];
+
   g_fAngleControlOut = pid_update(&anglePID,g_fSpeedControlOut,g_fCarAngle,DT);
   
   //跌倒检测

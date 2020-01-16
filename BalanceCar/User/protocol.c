@@ -14,12 +14,10 @@
 
 /* Includes ------------------------------------------------------------------*/ 
 #include "protocol.h"
-#include "angle_control.h"
-#include "speed_control.h"
-#include "direction_control.h"
 #include <string.h>
 #include <stdlib.h>
 #include "serial.h"
+#include "pid.h"
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
@@ -40,6 +38,10 @@ static char *strchr_pointer; // just a pointer to find chars in the cmd string l
 /*蓝牙控制相关变量定义*/
 float g_fBTSpeedSet = 0.0;
 float g_fBTDirectionSet = 0.0;
+
+extern PID_t anglePID;
+extern PID_t speedPID;
+extern PID_t turnPID;
 
 /* Private function prototypes -----------------------------------------------*/
 
@@ -111,6 +113,10 @@ void processCommand(void)
         {
           g_fBTSpeedSet = code_value(); //将X后面的数据作为速度的设定值
         }
+        if(code_seen('Z'))
+        {
+          g_fBTDirectionSet = code_value(); //将X后面的数据作为速度的设定值
+        }
         break;
       }
       case 2: //设置角度PID
@@ -129,16 +135,16 @@ void processCommand(void)
       }
       case 4: //设置转向PID
       {
-        if(code_seen('P')) turnP = code_value();
-        if(code_seen('I')) turnI = code_value();
-        if(code_seen('D')) turnD = code_value();
+        if(code_seen('P')) turnPID._kp = code_value();
+        if(code_seen('I')) turnPID._ki = code_value();
+        if(code_seen('D')) turnPID._kd = code_value();
         break;
       }
       case 5: //查询PID值
       {
-        LOG_INFO("angle pid: p=%.2f i=%.2f d=%.2f\n", angleP, angleI, angleD);
-        LOG_INFO("speed pid: p=%.2f i=%.2f d=%.2f\n", speedP, speedI, speedD);
-        LOG_INFO("turn pid: p=%.2f i=%.2f d=%.2f\n", turnP, turnI, turnD);
+        LOG_INFO("angle pid: p=%.2f i=%.2f d=%.2f\n", anglePID._kp, anglePID._kp, anglePID._kp);
+        LOG_INFO("speed pid: p=%.2f i=%.2f d=%.2f\n", speedPID._kp, speedPID._kp, speedPID._kp);
+        LOG_INFO("turn pid: p=%.2f i=%.2f d=%.2f\n", turnPID._kp, turnPID._kp, turnPID._kp);
         break;
       }
     }

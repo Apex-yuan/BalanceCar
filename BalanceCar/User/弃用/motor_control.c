@@ -45,8 +45,8 @@ void MotorOutput(void)
     g_fLeftMotorOut = 0;
     g_fRightMotorOut = 0;
   #elif 1  //串级PID控制输出 
-    g_fLeftMotorOut = g_fAngleControlOut;
-    g_fRightMotorOut = g_fAngleControlOut;
+    g_fLeftMotorOut = g_fAngleControlOut + g_fDirectionControlOut;
+    g_fRightMotorOut = g_fAngleControlOut - g_fDirectionControlOut;
   #elif 0 //直立+速度控制调试
     g_fLeftMotorOut = g_fAngleControlOut - g_fSpeedControlOut;
     g_fRightMotorOut = g_fAngleControlOut - g_fSpeedControlOut;
@@ -153,6 +153,8 @@ void MotorOutput(void)
   motor_setPwm(RIGHT_MOTOR, (uint16_t) fabs(g_fRightMotorOut));
 #endif 
 }
+
+
 
 
 
