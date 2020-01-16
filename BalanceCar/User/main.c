@@ -47,7 +47,7 @@ float g_fSpeedControlOut;
 float g_fDirectionControlOut;
 
 float g_fCarAngle;
-float g_fCarSpeed;
+float g_fCarLinearSpeed;
 
 float g_fTargetLinearSpeed;
 float g_fActualTargetLinearSpeed;
@@ -181,11 +181,10 @@ void TIM1_UP_IRQHandler(void)
         encoder_resetPulse(); //
         odometryCalc(leftEncoderTick, rightEncoderTick, &odom, DT);
 
-        g_fCarSpeed = odom.linearSpeed; ///0.21363;
-
-        g_fTargetLinearSpeed = g_fBTSpeedSet; //获取目标速度
+        g_fCarLinearSpeed = odom.linearSpeed; ///0.21363;
+        g_fTargetLinearSpeed = -g_fBTSpeedSet; //获取目标速度
         g_fActualTargetLinearSpeed += constrain(g_fTargetLinearSpeed - g_fActualTargetLinearSpeed, -LINEAR_ACCELERATION, LINEAR_ACCELERATION); //线速度平滑输出
-        g_fSpeedControlOut = pid_update(&speedPID,g_fActualTargetLinearSpeed,g_fCarSpeed,DT);
+        g_fSpeedControlOut = pid_update(&speedPID,g_fActualTargetLinearSpeed,g_fCarLinearSpeed,DT);
         g_fAngleControlOut = pid_update(&anglePID,g_fSpeedControlOut,g_fCarAngle,DT);
         
         g_fCarAngularSpeed = odom.angularSpeed;

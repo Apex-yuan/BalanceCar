@@ -142,9 +142,9 @@ void processCommand(void)
       }
       case 5: //≤È—ØPID÷µ
       {
-        LOG_INFO("angle pid: p=%.2f i=%.2f d=%.2f\n", anglePID._kp, anglePID._kp, anglePID._kp);
-        LOG_INFO("speed pid: p=%.2f i=%.2f d=%.2f\n", speedPID._kp, speedPID._kp, speedPID._kp);
-        LOG_INFO("turn pid: p=%.2f i=%.2f d=%.2f\n", turnPID._kp, turnPID._kp, turnPID._kp);
+        LOG_INFO("angle pid: p=%.4f i=%.4f d=%.4f\n", anglePID._kp, anglePID._ki, anglePID._kd);
+        LOG_INFO("speed pid: p=%.4f i=%.4f d=%.4f\n", speedPID._kp, speedPID._ki, speedPID._kd);
+        LOG_INFO("turn pid: p=%.4f i=%.4f d=%.4f\n", turnPID._kp, turnPID._ki, turnPID._ki);
         break;
       }
     }
